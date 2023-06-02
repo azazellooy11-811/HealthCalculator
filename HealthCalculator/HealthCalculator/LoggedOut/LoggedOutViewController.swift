@@ -30,9 +30,9 @@ class LoggedOutViewController: UIViewController {
         let view = UIStackView()
         
         view.axis = .horizontal
-        view.spacing = 15.0
+        view.spacing = 5
         view.distribution = .fillEqually
-        view.alignment = .fill
+        view.alignment = .center
         view.backgroundColor = .white
         
         return view
@@ -74,16 +74,17 @@ class LoggedOutViewController: UIViewController {
         view.addSubview(imageContainerView)
         imageContainerView.addSubview(imageView)
         view.addSubview(buttonsStackView)
-        buttonsStackView.addSubview(logInButton)
-        buttonsStackView.addSubview(registerButton)
+        buttonsStackView.addArrangedSubview(logInButton)
+        buttonsStackView.addArrangedSubview(registerButton)
         
         setupConstraints()
     }
     
     private func setupConstraints() {
         imageContainerView.snp.makeConstraints { make in
+            make.height.equalTo(500)
+            
             make.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
-            make.bottom.equalTo(buttonsStackView.snp.top)
         }
         
         imageView.snp.makeConstraints { make in
@@ -91,6 +92,7 @@ class LoggedOutViewController: UIViewController {
         }
         
         buttonsStackView.snp.makeConstraints { make in
+            make.top.equalTo(imageContainerView.snp.bottom).offset(30)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
@@ -98,14 +100,11 @@ class LoggedOutViewController: UIViewController {
         logInButton.snp.makeConstraints { make in
             make.height.equalTo(60)
             make.width.equalTo(180)
-            make.leading.top.bottom.equalToSuperview().inset(30)
         }
 
         registerButton.snp.makeConstraints { make in
             make.height.equalTo(60)
             make.width.equalTo(180)
-            make.top.trailing.bottom.equalToSuperview().inset(30)
-            make.leading.equalTo(logInButton.snp.trailing).offset(30)
         }
     }
 }
