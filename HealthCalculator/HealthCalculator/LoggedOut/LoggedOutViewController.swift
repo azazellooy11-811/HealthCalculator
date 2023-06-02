@@ -1,0 +1,111 @@
+//
+//  LoggedOutViewController.swift
+//  HealthCalculator
+//
+//  Created by Азалия Халилова on 02.06.2023.
+//
+
+import SnapKit
+import UIKit
+
+class LoggedOutViewController: UIViewController {
+    // MARK: - GUI Variables
+    private lazy var imageContainerView: UIView = {
+        let view = UIView()
+        
+        return view
+    }()
+    
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
+        
+        imageView.image = UIImage(named: "loggedOutImage")
+        imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        
+        return imageView
+    }()
+    
+    private lazy var buttonsStackView: UIStackView = {
+        let view = UIStackView()
+        
+        view.axis = .horizontal
+        view.spacing = 15.0
+        view.distribution = .fillEqually
+        view.alignment = .fill
+        view.backgroundColor = .white
+        
+        return view
+    }()
+    
+    private lazy var logInButton: UIButton = {
+        let button = UIButton()
+        
+        button.layer.cornerRadius = 30
+        button.backgroundColor = .buttonColor
+        button.setTitle("Log in".localized, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        
+        return button
+    }()
+    
+    private lazy var registerButton: UIButton = {
+        
+        let button = UIButton()
+        button.layer.cornerRadius = 30
+        button.backgroundColor = .buttonColor
+        button.setTitle("Register".localized, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        
+        return button
+    }()
+
+    // MARK: - Life Cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        
+        setupUI()
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setupUI() {
+        view.addSubview(imageContainerView)
+        imageContainerView.addSubview(imageView)
+        view.addSubview(buttonsStackView)
+        buttonsStackView.addSubview(logInButton)
+        buttonsStackView.addSubview(registerButton)
+        
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        imageContainerView.snp.makeConstraints { make in
+            make.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(buttonsStackView.snp.top)
+        }
+        
+        imageView.snp.makeConstraints { make in
+            make.leading.top.trailing.bottom.equalToSuperview()
+        }
+        
+        buttonsStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        logInButton.snp.makeConstraints { make in
+            make.height.equalTo(60)
+            make.width.equalTo(180)
+            make.leading.top.bottom.equalToSuperview().inset(30)
+        }
+
+        registerButton.snp.makeConstraints { make in
+            make.height.equalTo(60)
+            make.width.equalTo(180)
+            make.top.trailing.bottom.equalToSuperview().inset(30)
+            make.leading.equalTo(logInButton.snp.trailing).offset(30)
+        }
+    }
+}
