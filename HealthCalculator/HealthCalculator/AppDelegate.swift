@@ -18,8 +18,8 @@ var window: UIWindow?
         
         if let window {
             let navigationController = UINavigationController()
-            let viewController = UIViewController()
-            navigationController.viewControllers = [viewController]
+            let loggedOutViewController = LoggedOutViewController()
+            navigationController.viewControllers = [loggedOutViewController]
             window.rootViewController = navigationController
             window.makeKeyAndVisible()
         }
