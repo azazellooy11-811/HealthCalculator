@@ -56,7 +56,9 @@ class LoggedOutViewController: UIViewController {
         button.backgroundColor = .buttonColor
         button.setTitle("Register".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
-        
+        button.addTarget(self,
+                         action: #selector(goToRegisterScreen),
+                         for: .touchUpInside)
         return button
     }()
 
@@ -69,6 +71,12 @@ class LoggedOutViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    @objc
+    private func goToRegisterScreen() {
+        navigationController?.pushViewController(RegisterScreenViewController(),
+                                                 animated: true)
+    }
+    
     
     private func setupUI() {
         view.addSubview(imageContainerView)
@@ -82,7 +90,8 @@ class LoggedOutViewController: UIViewController {
     
     private func setupConstraints() {
         imageContainerView.snp.makeConstraints { make in
-            make.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalToSuperview()
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
         
         imageView.snp.makeConstraints { make in
@@ -92,7 +101,7 @@ class LoggedOutViewController: UIViewController {
         buttonsStackView.snp.makeConstraints { make in
             make.top.equalTo(imageContainerView.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview().inset(15)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(15)
         }
         
         logInButton.snp.makeConstraints { make in
