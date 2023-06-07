@@ -8,3 +8,9 @@
 
 "Log in" = "Вход";
 "Register" = "Регистрация";
+"next" = "дальше";
+"Login" = "Логин";
+"Password" = "Пароль";
+"First Name" = "Имя";
+"Last Name" = "Фамилия";
+

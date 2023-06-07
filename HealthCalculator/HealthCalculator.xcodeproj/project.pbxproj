@@ -15,6 +15,7 @@
 		3617B4442A2A244400C3D891 /* UIColor+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617B4432A2A244300C3D891 /* UIColor+Ex.swift */; };
 		3617B4472A2A281200C3D891 /* String+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617B4462A2A281200C3D891 /* String+Ex.swift */; };
 		3617B44A2A2A28AB00C3D891 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3617B44C2A2A28AB00C3D891 /* Localizable.strings */; };
+		3617B44F2A2B778F00C3D891 /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617B44E2A2B778F00C3D891 /* RegisterScreenViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		3617B4462A2A281200C3D891 /* String+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ex.swift"; sourceTree = "<group>"; };
 		3617B44B2A2A28AB00C3D891 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3617B44D2A2A28BA00C3D891 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3617B44E2A2B778F00C3D891 /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 			children = (
 				3617B42B2A2A0DE400C3D891 /* AppDelegate.swift */,
 				3617B43F2A2A11AF00C3D891 /* LoggedOut */,
+				3617B4502A2B779A00C3D891 /* Register */,
 				3617B4342A2A0DE700C3D891 /* Assets.xcassets */,
 				3617B44C2A2A28AB00C3D891 /* Localizable.strings */,
 				3617B4362A2A0DE700C3D891 /* LaunchScreen.storyboard */,
@@ -87,6 +90,14 @@
 				3617B4462A2A281200C3D891 /* String+Ex.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3617B4502A2B779A00C3D891 /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				3617B44E2A2B778F00C3D891 /* RegisterScreenViewController.swift */,
+			);
+			path = Register;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,6 +182,7 @@
 				3617B4472A2A281200C3D891 /* String+Ex.swift in Sources */,
 				3617B4302A2A0DE400C3D891 /* LoggedOutViewController.swift in Sources */,
 				3617B42C2A2A0DE400C3D891 /* AppDelegate.swift in Sources */,
+				3617B44F2A2B778F00C3D891 /* RegisterScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
