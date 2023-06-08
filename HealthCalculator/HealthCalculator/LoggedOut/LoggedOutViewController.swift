@@ -45,6 +45,9 @@ class LoggedOutViewController: UIViewController {
         button.backgroundColor = .buttonColor
         button.setTitle("Log in".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.addTarget(self,
+                                 action: #selector(goToLogInScreen),
+                                 for: .touchUpInside)
         
         return button
     }()
@@ -77,6 +80,11 @@ class LoggedOutViewController: UIViewController {
                                                  animated: true)
     }
     
+    @objc
+        private func goToLogInScreen() {
+            navigationController?.pushViewController(LogInScreenViewController(),
+                                                     animated: true)
+        }
     
     private func setupUI() {
         view.addSubview(imageContainerView)
