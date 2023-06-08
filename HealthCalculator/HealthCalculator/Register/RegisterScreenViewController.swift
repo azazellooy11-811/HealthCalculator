@@ -71,6 +71,10 @@ class RegisterScreenViewController: UIViewController {
         button.setTitle("next".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
         
+        button.addTarget(self,
+                         action: #selector(registerUser),
+                         for: .touchUpInside)
+        
         return button
     }()
     
@@ -135,6 +139,30 @@ class RegisterScreenViewController: UIViewController {
             make.height.equalTo(60)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(lastNameTextField.snp.bottom).offset(50)
+        }
+    }
+    
+    @objc
+    private func registerUser() {
+        guard let login = loginTextField.text,
+              let password = passwordTextField.text,
+              let firstName = firstNameTextField.text,
+              let lastName = lastNameTextField.text else { return }
+        
+        if KeychainManager.registerUser(login: login,
+                                     password: password,
+                                     firstName: firstName,
+                                        lastName: lastName) {
+            print("успешно зарегистрирован")
+            // TODO: - придумай тут что-нибудь, может алерт какой-нибудь
+            navigationController?.pushViewController(LoggedOutViewController(), animated: true)
+        } else {
+            let alert = UIAlertController(title: "Error".localized,
+                                          message: "Пользователь не зарегистрирован! Попробуй снова".localized,
+                                          preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK".localized, style: .default)
+            alert.addAction(action)
+            present(alert, animated: true)
         }
     }
 }
