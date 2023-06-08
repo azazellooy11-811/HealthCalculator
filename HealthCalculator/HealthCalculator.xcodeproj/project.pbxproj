@@ -71,12 +71,12 @@
 				3617B42B2A2A0DE400C3D891 /* AppDelegate.swift */,
 				3617B43F2A2A11AF00C3D891 /* LoggedOut */,
 				3617B4502A2B779A00C3D891 /* Register */,
+				36AF71952A321A6F002C9132 /* LogIn */,
 				3617B4342A2A0DE700C3D891 /* Assets.xcassets */,
 				3617B44C2A2A28AB00C3D891 /* Localizable.strings */,
 				3617B4362A2A0DE700C3D891 /* LaunchScreen.storyboard */,
 				3617B4392A2A0DE700C3D891 /* Info.plist */,
 				3617B4452A2A25B100C3D891 /* Extensions */,
-				36AF71932A32197B002C9132 /* LogInScreenViewController.swift */,
 			);
 			path = HealthCalculator;
 			sourceTree = "<group>";
@@ -104,6 +104,14 @@
 				3617B44E2A2B778F00C3D891 /* RegisterScreenViewController.swift */,
 			);
 			path = Register;
+			sourceTree = "<group>";
+		};
+		36AF71952A321A6F002C9132 /* LogIn */ = {
+			isa = PBXGroup;
+			children = (
+				36AF71932A32197B002C9132 /* LogInScreenViewController.swift */,
+			);
+			path = LogIn;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
