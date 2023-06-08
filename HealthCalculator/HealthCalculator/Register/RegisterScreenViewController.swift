@@ -77,7 +77,13 @@ class RegisterScreenViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .white
+        
+        loginTextField.delegate = self
+        passwordTextField.delegate = self
+        firstNameTextField.delegate = self
+        lastNameTextField.delegate = self
         
         setupUI()
     }
@@ -131,4 +137,8 @@ class RegisterScreenViewController: UIViewController {
             make.top.equalTo(lastNameTextField.snp.bottom).offset(50)
         }
     }
+}
+
+extension RegisterScreenViewController: UITextFieldDelegate {
+    
 }
