@@ -150,8 +150,8 @@ class RegisterScreenViewController: UIViewController {
               let lastName = lastNameTextField.text else { return }
         
         if KeychainManager.registerUser(login: login,
-                                     password: password,
-                                     firstName: firstName,
+                                        password: password,
+                                        firstName: firstName,
                                         lastName: lastName) {
             print("успешно зарегистрирован")
             // TODO: - придумай тут что-нибудь, может алерт какой-нибудь
