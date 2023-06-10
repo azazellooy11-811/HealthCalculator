@@ -18,6 +18,8 @@
 		3617B44F2A2B778F00C3D891 /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617B44E2A2B778F00C3D891 /* RegisterScreenViewController.swift */; };
 		363EDAD52A31F95900FFACB0 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363EDAD42A31F95900FFACB0 /* KeychainManager.swift */; };
 		36AF71942A32197B002C9132 /* LogInScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AF71932A32197B002C9132 /* LogInScreenViewController.swift */; };
+		36AF71972A321C60002C9132 /* ProfileScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AF71962A321C60002C9132 /* ProfileScreenViewController.swift */; };
+		36AF719A2A334409002C9132 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AF71992A334409002C9132 /* TabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		3617B44E2A2B778F00C3D891 /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 		363EDAD42A31F95900FFACB0 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		36AF71932A32197B002C9132 /* LogInScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInScreenViewController.swift; sourceTree = "<group>"; };
+		36AF71962A321C60002C9132 /* ProfileScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenViewController.swift; sourceTree = "<group>"; };
+		36AF71992A334409002C9132 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,11 +76,13 @@
 				3617B43F2A2A11AF00C3D891 /* LoggedOut */,
 				3617B4502A2B779A00C3D891 /* Register */,
 				36AF71952A321A6F002C9132 /* LogIn */,
+				36AF71982A321C66002C9132 /* Profile */,
 				3617B4342A2A0DE700C3D891 /* Assets.xcassets */,
 				3617B44C2A2A28AB00C3D891 /* Localizable.strings */,
 				3617B4362A2A0DE700C3D891 /* LaunchScreen.storyboard */,
 				3617B4392A2A0DE700C3D891 /* Info.plist */,
 				3617B4452A2A25B100C3D891 /* Extensions */,
+				36AF71992A334409002C9132 /* TabBarController.swift */,
 			);
 			path = HealthCalculator;
 			sourceTree = "<group>";
@@ -112,6 +118,14 @@
 				36AF71932A32197B002C9132 /* LogInScreenViewController.swift */,
 			);
 			path = LogIn;
+			sourceTree = "<group>";
+		};
+		36AF71982A321C66002C9132 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				36AF71962A321C60002C9132 /* ProfileScreenViewController.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,7 +209,9 @@
 				36AF71942A32197B002C9132 /* LogInScreenViewController.swift in Sources */,
 				3617B4442A2A244400C3D891 /* UIColor+Ex.swift in Sources */,
 				363EDAD52A31F95900FFACB0 /* KeychainManager.swift in Sources */,
+				36AF719A2A334409002C9132 /* TabBarController.swift in Sources */,
 				3617B4472A2A281200C3D891 /* String+Ex.swift in Sources */,
+				36AF71972A321C60002C9132 /* ProfileScreenViewController.swift in Sources */,
 				3617B4302A2A0DE400C3D891 /* LoggedOutViewController.swift in Sources */,
 				3617B42C2A2A0DE400C3D891 /* AppDelegate.swift in Sources */,
 				3617B44F2A2B778F00C3D891 /* RegisterScreenViewController.swift in Sources */,

@@ -42,7 +42,7 @@ class LoggedOutViewController: UIViewController {
         let button = UIButton()
         
         button.layer.cornerRadius = 30
-        button.backgroundColor = .buttonColor
+        button.backgroundColor = .green
         button.setTitle("Log in".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self,
@@ -56,7 +56,7 @@ class LoggedOutViewController: UIViewController {
         
         let button = UIButton()
         button.layer.cornerRadius = 30
-        button.backgroundColor = .buttonColor
+        button.backgroundColor = .green
         button.setTitle("Register".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self,

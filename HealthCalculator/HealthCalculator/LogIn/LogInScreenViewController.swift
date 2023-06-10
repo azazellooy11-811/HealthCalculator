@@ -48,9 +48,10 @@ class LogInScreenViewController: UIViewController {
         let button = UIButton()
         
         button.layer.cornerRadius = 30
-        button.backgroundColor = .buttonColor
+        button.backgroundColor = .green
         button.setTitle("Log in".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.addTarget(self, action: #selector(checkUser), for: .touchUpInside)
         
         return button
     }()
@@ -64,6 +65,22 @@ class LogInScreenViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    @objc
+    private func checkUser() {
+        guard let login = loginTextField.text,
+              let password = passwordTextField.text else { return }
+        if KeychainManager.logInUser(login: login, password: password) {
+            navigationController?.pushViewController(TabBarController(), animated: true)
+        } else {
+            let alert = UIAlertController(title: "Error".localized,
+                                          message: "Логин или пароль неправильные! Попробуй снова".localized,
+                                          preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK".localized, style: .default)
+            alert.addAction(action)
+            present(alert, animated: true)
+        }
+    }
+    
     private func setupUI() {
         view.addSubview(containerView)
         containerView.addSubview(logInTitle)
