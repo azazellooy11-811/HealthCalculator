@@ -67,7 +67,7 @@ class RegisterScreenViewController: UIViewController {
         let button = UIButton()
         
         button.layer.cornerRadius = 30
-        button.backgroundColor = .buttonColor
+        button.backgroundColor = .green
         button.setTitle("next".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
         
