@@ -98,8 +98,7 @@ class LoggedOutViewController: UIViewController {
     
     private func setupConstraints() {
         imageContainerView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.leading.top.trailing.equalToSuperview()
         }
         
         imageView.snp.makeConstraints { make in
@@ -107,19 +106,16 @@ class LoggedOutViewController: UIViewController {
         }
         
         buttonsStackView.snp.makeConstraints { make in
-            make.top.equalTo(imageContainerView.snp.bottom).offset(15)
-            make.leading.trailing.equalToSuperview().inset(15)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(15)
+            make.leading.bottom.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(imageContainerView.snp.bottom).offset(20)
         }
         
         logInButton.snp.makeConstraints { make in
             make.height.equalTo(60)
-            make.width.equalTo(180)
         }
 
         registerButton.snp.makeConstraints { make in
             make.height.equalTo(60)
-            make.width.equalTo(180)
         }
     }
 }

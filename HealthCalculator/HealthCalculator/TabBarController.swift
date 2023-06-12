@@ -14,6 +14,7 @@ class TabBarController: UITabBarController {
         self.navigationItem.hidesBackButton = true
         
         view.tintColor = .black
+        self.tabBar.backgroundColor = .white
         
         setupViewControllers()
     }
@@ -21,7 +22,7 @@ class TabBarController: UITabBarController {
     private func setupViewControllers() {
         viewControllers = [
             setupNavigationController(rootViewController: ProfileScreenViewController(),
-                                      title: "Profile",
+                                      title: "",
                                       image: UIImage(systemName: "person.fill")?.withConfiguration(UIImage.SymbolConfiguration(hierarchicalColor: .green)) ?? .add),
             setupNavigationController(rootViewController: RegisterScreenViewController(),
                                       title: "Calculate",
