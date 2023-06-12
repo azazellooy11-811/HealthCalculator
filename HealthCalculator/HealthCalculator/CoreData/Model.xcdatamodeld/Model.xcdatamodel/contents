@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22F66" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ProfileInfo" representedClassName="ProfileInfo" syncable="YES">
+        <attribute name="calories" attributeType="String"/>
+        <attribute name="carbohydrate" attributeType="String"/>
+        <attribute name="fats" attributeType="String"/>
+        <attribute name="firstName" attributeType="String"/>
+        <attribute name="imageUrl" optional="YES" attributeType="URI"/>
+        <attribute name="lastName" attributeType="String"/>
+        <attribute name="proteins" attributeType="String"/>
+    </entity>
+</model>
