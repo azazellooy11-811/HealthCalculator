@@ -154,6 +154,9 @@ class RegisterScreenViewController: UIViewController {
                                         firstName: firstName,
                                         lastName: lastName) {
             print("успешно зарегистрирован")
+            ProfileInfoPersistent.save(ProfileInfoModel(firstName: firstName,
+                                                        lastName: lastName,
+                                                        login: login))
             // TODO: - придумай тут что-нибудь, может алерт какой-нибудь
             navigationController?.pushViewController(LoggedOutViewController(), animated: true)
         } else {

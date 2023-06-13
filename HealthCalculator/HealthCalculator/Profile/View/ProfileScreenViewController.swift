@@ -89,6 +89,9 @@ class ProfileScreenViewController: UIViewController {
         return label
     }()
     
+    // MARK: - Properties
+    var viewModel: ProfileViewModelProtocol?
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,8 +99,18 @@ class ProfileScreenViewController: UIViewController {
         view.backgroundColor = .white
         setupGradient()
         setupUI()
+        configure()
     }
     // MARK: - Private Methods
+    private func configure() {
+        firstName.text = viewModel?.profileInfo?.firstName
+        lastName.text = viewModel?.profileInfo?.lastName
+        caloriesLabel.text = viewModel?.profileInfo?.calories
+        proteinsLabel.text = viewModel?.profileInfo?.proteins
+        fatsLabel.text = viewModel?.profileInfo?.fats
+        carbohydrateLabel.text = viewModel?.profileInfo?.carbohydrate
+    }
+    
     private func setupUI() {
         view.addSubview(profileImage)
         view.addSubview(firstName)
