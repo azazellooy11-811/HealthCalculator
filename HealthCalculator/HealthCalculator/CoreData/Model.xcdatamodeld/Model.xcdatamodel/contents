@@ -7,6 +7,7 @@
         <attribute name="firstName" attributeType="String"/>
         <attribute name="imageUrl" optional="YES" attributeType="URI"/>
         <attribute name="lastName" attributeType="String"/>
+        <attribute name="login" optional="YES" attributeType="String"/>
         <attribute name="proteins" attributeType="String"/>
     </entity>
 </model>

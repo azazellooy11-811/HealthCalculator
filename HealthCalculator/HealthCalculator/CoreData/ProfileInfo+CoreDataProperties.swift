@@ -23,6 +23,7 @@ extension ProfileInfo {
     @NSManaged public var proteins: String?
     @NSManaged public var fats: String?
     @NSManaged public var carbohydrate: String?
+    @NSManaged public var login: String?
 
 }
 

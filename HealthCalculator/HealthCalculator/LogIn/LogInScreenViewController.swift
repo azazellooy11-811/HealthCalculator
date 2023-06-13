@@ -56,6 +56,9 @@ class LogInScreenViewController: UIViewController {
         return button
     }()
     
+    // MARK: - Properties
+    var viewModel: ProfileViewModelProtocol?
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +73,10 @@ class LogInScreenViewController: UIViewController {
         guard let login = loginTextField.text,
               let password = passwordTextField.text else { return }
         if KeychainManager.logInUser(login: login, password: password) {
+            let profileInfo = ProfileInfoPersistent.fetchProfileInfo(login: login)
+            let viewModel = ProfileViewModel(profileInfo: profileInfo)
+            self.viewModel = viewModel
+            
             navigationController?.pushViewController(TabBarController(), animated: true)
         } else {
             let alert = UIAlertController(title: "Error".localized,
