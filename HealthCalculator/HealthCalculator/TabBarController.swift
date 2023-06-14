@@ -21,7 +21,7 @@ class TabBarController: UITabBarController {
     
     private func setupViewControllers() {
         viewControllers = [
-            setupNavigationController(rootViewController: ProfileScreenViewController(),
+            setupNavigationController(rootViewController: ProfileScreenViewController(viewModel: ProfileViewModel(profileInfo: ProfileInfoModel())),
                                       title: "",
                                       image: UIImage(systemName: "person.fill")?.withConfiguration(UIImage.SymbolConfiguration(hierarchicalColor: .green)) ?? .add),
             setupNavigationController(rootViewController: RegisterScreenViewController(),

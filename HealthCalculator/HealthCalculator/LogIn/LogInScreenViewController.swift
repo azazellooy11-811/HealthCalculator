@@ -72,12 +72,14 @@ class LogInScreenViewController: UIViewController {
     private func checkUser() {
         guard let login = loginTextField.text,
               let password = passwordTextField.text else { return }
+        
         if KeychainManager.logInUser(login: login, password: password) {
             let profileInfo = ProfileInfoPersistent.fetchProfileInfo(login: login)
             let viewModel = ProfileViewModel(profileInfo: profileInfo)
+            
             self.viewModel = viewModel
             
-            navigationController?.pushViewController(TabBarController(), animated: true)
+            navigationController?.pushViewController(ProfileScreenViewController(viewModel: viewModel), animated: true)
         } else {
             let alert = UIAlertController(title: "Error".localized,
                                           message: "Логин или пароль неправильные! Попробуй снова".localized,
