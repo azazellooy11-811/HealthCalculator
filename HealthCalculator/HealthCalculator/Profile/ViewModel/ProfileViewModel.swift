@@ -8,15 +8,13 @@
 import UIKit
 
 protocol ProfileViewModelProtocol {
-    var profileInfo: ProfileInfoModel? { get set }
+    var profileInfo: ProfileInfoModel { get }
 }
 
 final class ProfileViewModel: ProfileViewModelProtocol {
-    var profileInfo: ProfileInfoModel?
+    var profileInfo: ProfileInfoModel
     
-    //let profileInfo: ProfileInfoModel?
-    
-    init(profileInfo: ProfileInfoModel?) {
+    init(profileInfo: ProfileInfoModel) {
         self.profileInfo = profileInfo
     }
 }

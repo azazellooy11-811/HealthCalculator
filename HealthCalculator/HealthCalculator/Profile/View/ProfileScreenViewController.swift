@@ -90,7 +90,16 @@ class ProfileScreenViewController: UIViewController {
     }()
     
     // MARK: - Properties
-    var viewModel: ProfileViewModelProtocol?
+    var viewModel: ProfileViewModelProtocol
+    
+    init(viewModel: ProfileViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -103,12 +112,12 @@ class ProfileScreenViewController: UIViewController {
     }
     // MARK: - Private Methods
     private func configure() {
-        firstName.text = viewModel?.profileInfo?.firstName
-        lastName.text = viewModel?.profileInfo?.lastName
-        caloriesLabel.text = viewModel?.profileInfo?.calories
-        proteinsLabel.text = viewModel?.profileInfo?.proteins
-        fatsLabel.text = viewModel?.profileInfo?.fats
-        carbohydrateLabel.text = viewModel?.profileInfo?.carbohydrate
+        firstName.text = viewModel.profileInfo.firstName
+        lastName.text = viewModel.profileInfo.lastName
+        caloriesLabel.text = viewModel.profileInfo.calories
+        proteinsLabel.text = viewModel.profileInfo.proteins
+        fatsLabel.text = viewModel.profileInfo.fats
+        carbohydrateLabel.text = viewModel.profileInfo.carbohydrate
     }
     
     private func setupUI() {
