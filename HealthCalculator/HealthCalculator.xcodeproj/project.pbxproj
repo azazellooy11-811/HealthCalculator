@@ -27,6 +27,8 @@
 		36BB2D152A37C29B0051CED6 /* ProfileInfoPersistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BB2D142A37C29B0051CED6 /* ProfileInfoPersistent.swift */; };
 		36CE5B042A389307001F5D64 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CE5B032A389307001F5D64 /* ProfileViewModel.swift */; };
 		36CE5B062A38C12A001F5D64 /* LogInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CE5B052A38C12A001F5D64 /* LogInViewModel.swift */; };
+		36CE5B092A3B5C28001F5D64 /* CalculateScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CE5B082A3B5C28001F5D64 /* CalculateScreenViewController.swift */; };
+		36CE5B0B2A3C7F7D001F5D64 /* CalculateDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CE5B0A2A3C7F7D001F5D64 /* CalculateDataModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +54,8 @@
 		36BB2D142A37C29B0051CED6 /* ProfileInfoPersistent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoPersistent.swift; sourceTree = "<group>"; };
 		36CE5B032A389307001F5D64 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		36CE5B052A38C12A001F5D64 /* LogInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewModel.swift; sourceTree = "<group>"; };
+		36CE5B082A3B5C28001F5D64 /* CalculateScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateScreenViewController.swift; sourceTree = "<group>"; };
+		36CE5B0A2A3C7F7D001F5D64 /* CalculateDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateDataModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +97,7 @@
 				3617B4502A2B779A00C3D891 /* Register */,
 				36AF71952A321A6F002C9132 /* LogIn */,
 				36AF71982A321C66002C9132 /* Profile */,
+				36CE5B072A3B5BF9001F5D64 /* Calculate */,
 				3617B4342A2A0DE700C3D891 /* Assets.xcassets */,
 				3617B44C2A2A28AB00C3D891 /* Localizable.strings */,
 				3617B4362A2A0DE700C3D891 /* LaunchScreen.storyboard */,
@@ -181,6 +186,15 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		36CE5B072A3B5BF9001F5D64 /* Calculate */ = {
+			isa = PBXGroup;
+			children = (
+				36CE5B082A3B5C28001F5D64 /* CalculateScreenViewController.swift */,
+				36CE5B0A2A3C7F7D001F5D64 /* CalculateDataModel.swift */,
+			);
+			path = Calculate;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -260,8 +274,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				36AF71942A32197B002C9132 /* LogInScreenViewController.swift in Sources */,
+				36CE5B092A3B5C28001F5D64 /* CalculateScreenViewController.swift in Sources */,
 				36BB2D122A37C0DB0051CED6 /* ProfileInfo+CoreDataProperties.swift in Sources */,
 				36BB2D152A37C29B0051CED6 /* ProfileInfoPersistent.swift in Sources */,
+				36CE5B0B2A3C7F7D001F5D64 /* CalculateDataModel.swift in Sources */,
 				3617B4442A2A244400C3D891 /* UIColor+Ex.swift in Sources */,
 				363EDAD52A31F95900FFACB0 /* KeychainManager.swift in Sources */,
 				36BB2D112A37C0DB0051CED6 /* ProfileInfo+CoreDataClass.swift in Sources */,

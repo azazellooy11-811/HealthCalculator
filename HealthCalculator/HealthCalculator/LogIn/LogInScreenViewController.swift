@@ -79,7 +79,7 @@ class LogInScreenViewController: UIViewController {
             
             self.viewModel = viewModel
             
-            navigationController?.pushViewController(ProfileScreenViewController(viewModel: viewModel), animated: true)
+            navigationController?.pushViewController(TabBarController(profileScreenViewController: ProfileScreenViewController(viewModel: viewModel)), animated: true)
         } else {
             let alert = UIAlertController(title: "Error".localized,
                                           message: "Логин или пароль неправильные! Попробуй снова".localized,
