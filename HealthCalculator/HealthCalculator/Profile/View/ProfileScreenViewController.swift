@@ -109,6 +109,7 @@ class ProfileScreenViewController: UIViewController {
         setupGradient()
         setupUI()
         configure()
+        navigationController?.navigationBar.backgroundColor = .red
     }
     // MARK: - Private Methods
     private func configure() {
@@ -136,7 +137,7 @@ class ProfileScreenViewController: UIViewController {
     private func setupConstraints() {
         profileImage.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(100)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(15)
             make.width.equalTo(100)
             make.height.equalTo(100)
         }
