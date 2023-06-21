@@ -8,8 +8,8 @@
 import Foundation
 
 struct CaloriesModel {
-    let calories: String
-    let proteins: String
-    let fats: String
-    let carbohydrate: String
+    let calories: Int
+    let proteins: Int
+    let fats: Int
+    let carbohydrate: Int
 }

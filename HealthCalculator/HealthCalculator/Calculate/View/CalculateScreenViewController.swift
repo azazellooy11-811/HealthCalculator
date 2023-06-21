@@ -56,22 +56,33 @@ class CalculateScreenViewController: UIViewController {
         return view
     }()
     
-    private lazy var femaleCheckboxImageView: UIImageView = {
-       let view = UIImageView()
+    private lazy var femaleCheckboxImageView: UIButton = {
+        let checkbox = UIButton.init(type: .custom)
+        //        checkbox.setImage(UIImage.init(named: "iconCheckboxOutlined"), for: .normal)
+        //        checkbox.setImage(UIImage.init(named: "iconCheckboxFilled"), for: .selected)
+        checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
+        checkbox.setImage(UIImage.checkmark, for: .selected)
+        //checkbox.setImage(UIImage.checkmark, for: .selected)
+        //checkbox.setImage(UIImage(systemName: "circlebadge"), for: .normal)
         
-        view.image = State.unselect.image
-        view.contentMode = .center
+        checkbox.addTarget(self, action: #selector(toggleCheckboxSelection), for: .touchUpInside)
+        //        view.image = State.unselect.image
+        //        view.contentMode = .center
         
-        return view
+        return checkbox
     }()
     
-    private lazy var maleCheckboxImageView: UIImageView = {
-       let view = UIImageView()
+    private lazy var maleCheckboxImageView: UIButton = {
+        let checkbox = UIButton.init(type: .custom)
         
-        view.image = State.unselect.image
-        view.contentMode = .center
+        checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
+        checkbox.setImage(UIImage.checkmark, for: .selected)
         
-        return view
+        checkbox.addTarget(self, action: #selector(toggleCheckboxSelection), for: .touchUpInside)
+        //        view.image = State.unselect.image
+        //        view.contentMode = .center
+        
+        return checkbox
     }()
     
     private lazy var ageLabel: UILabel = {
@@ -88,6 +99,7 @@ class CalculateScreenViewController: UIViewController {
         
         textField.placeholder = "age".localized
         textField.borderStyle = .roundedRect
+        
         
         return textField
     }()
@@ -133,31 +145,99 @@ class CalculateScreenViewController: UIViewController {
         
         button.layer.cornerRadius = 30
         button.backgroundColor = .green
-        button.setTitle("next".localized, for: .normal)
+        button.setTitle("Log in".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
-        
-        
+        button.addTarget(self,
+                         action: #selector(returnResult),
+                         for: .touchUpInside)
         
         return button
     }()
     
-    //Life Cycle
+    // MARK: - Properties
+    var viewModel: CalculateViewModelProtocol
+    var isSelected: Bool = false
+    var selectedGender: Gender =  .female
+    
+    
+    //    private(set) var isCheckedFemale: Bool = false {
+    //            didSet{
+    //                femaleCheckboxImageView.image = self.isCheckedFemale ? State.select.image : State.unselect.image
+    //            }
+    //        }
+    
+    //    private(set) var isCheckedMale: Bool = false {
+    //            didSet{
+    //                femaleCheckboxImageView.image = self.isCheckedFemale ? State.select.image : State.unselect.image
+    //            }
+    //        }
+    
+    init(viewModel: CalculateViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        ageTextField.delegate = self
+        weightTextField.delegate = self
+        heightTextField.delegate = self
         //setupGradient()
         setupUI()
     }
     
     // MARK: - Private Methods
+    @objc
+    func toggleCheckboxSelection() {
+        femaleCheckboxImageView.isSelected = !femaleCheckboxImageView.isSelected
+        maleCheckboxImageView.isSelected = femaleCheckboxImageView.isSelected ? maleCheckboxImageView.isSelected : !maleCheckboxImageView.isSelected
+        
+        if femaleCheckboxImageView.isSelected {
+            maleCheckboxImageView.isSelected = false
+            selectedGender = .female
+        } else if maleCheckboxImageView.isSelected {
+            selectedGender = .male
+            femaleCheckboxImageView.isSelected = false
+        }
+        
+    }
+    
+    //        print("g")
+    //        if femaleCheckboxImageView.isSelected {
+    //            selectedGender = .female
+    //            femaleCheckboxImageView.isSelected = !femaleCheckboxImageView.isSelected
+    //        } else if maleCheckboxImageView.isSelected {
+    //            femaleCheckboxImageView.isSelected = !femaleCheckboxImageView.isSelected
+    //            selectedGender = .male
+    //        }
+    //    }
+    
+    @objc
+    func returnResult() {
+        print("g")
+        let result = viewModel.returnCalories()
+        let alert = UIAlertController(title: "Error".localized,
+                                      message: "калории \(result) ".localized,
+                                      preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK".localized, style: .default)
+        alert.addAction(action)
+        present(alert, animated: true)
+    }
+    
     
     private func setupUI() {
         view.addSubview(genderContainerView)
         genderContainerView.addSubview(genderLabel)
-        genderContainerView.addSubview(femaleCheckboxImageView)
+        view.addSubview(femaleCheckboxImageView)
         genderContainerView.addSubview(maleLabel)
-        genderContainerView.addSubview(maleCheckboxImageView)
+        view.addSubview(maleCheckboxImageView)
         genderContainerView.addSubview(femaleLabel)
         view.addSubview(ageLabel)
         view.addSubview(ageTextField)
@@ -186,6 +266,7 @@ class CalculateScreenViewController: UIViewController {
         }
         
         femaleLabel.snp.makeConstraints { make in
+            
             make.leading.equalTo(femaleCheckboxImageView.snp.trailing).offset(5)
             make.top.equalTo(genderLabel.snp.bottom)
         }
@@ -232,7 +313,8 @@ class CalculateScreenViewController: UIViewController {
         
         nextButton.snp.makeConstraints { make in
             make.height.equalTo(60)
-            make.trailing.bottom.equalTo(view.safeAreaLayoutGuide).offset(-15)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(ageTextField.snp.bottom).inset(2)
         }
     }
     
@@ -242,6 +324,23 @@ class CalculateScreenViewController: UIViewController {
         gradientLayer.colors = [UIColor.white.cgColor, UIColor.lightGray.cgColor]
         gradientLayer.locations = [0.0, 1.0]
         self.view.layer.insertSublayer(gradientLayer, at: 0)
+    }
+}
+
+extension CalculateScreenViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let age = ageTextField.text,
+              let height = heightTextField.text,
+              let weight = weightTextField.text,
+              let ageInt = Int(age),
+              let heightInt = Int(height),
+              let weightInt = Int(weight) else { return }
+        
+        let gender = femaleCheckboxImageView.isSelected ? Gender.female : Gender.male
+        
+        viewModel.get(gender: gender, age: ageInt , height: heightInt , weight: weightInt)
+        viewModel.get(steps: 5000, cardio: 10, workout: 10)
+        viewModel.get(goal: .weightLoss)
     }
 }
 

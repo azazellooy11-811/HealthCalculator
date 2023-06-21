@@ -8,13 +8,13 @@
 import Foundation
 
 struct CalculateDataModel {
-    let gender: GenderModel
+    let gender: Gender
     let age: Int
     let height: Int
     let weight: Int
     let steps: Int
     let cardio: Int
     let workout: Int
-    let goal: GoalModel
+    let goal: Goal
 }
 

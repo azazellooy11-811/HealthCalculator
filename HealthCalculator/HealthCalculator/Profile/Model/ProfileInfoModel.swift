@@ -10,13 +10,13 @@ import Foundation
 struct ProfileInfoModel {
     let imageUrl: String? = nil
     let image: Data? = nil
-    let firstName: String
-    let lastName: String
-    let login: String
-    let calories: String = "-"
-    let proteins: String = "-"
-    let fats: String = "-"
-    let carbohydrate: String = "-"
+    var firstName: String = "-"
+    var lastName: String = "-"
+    var login: String = "-"
+    var calories: String = "-"
+    var proteins: String = "-"
+    var fats: String = "-"
+    var carbohydrate: String = "-"
     
     init(profileInfo: ProfileInfo) {
         self.firstName = profileInfo.firstName ?? ""
@@ -28,5 +28,15 @@ struct ProfileInfoModel {
         self.firstName = firstName
         self.lastName = lastName
         self.login = login
+    }
+    
+    init(firstName: String, lastName: String, login: String,calories: String, proteins: String, fats: String, carbohydrate: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.login = login
+        self.calories = calories
+        self.proteins = proteins
+        self.fats = fats
+        self.carbohydrate = carbohydrate
     }
 }
