@@ -22,6 +22,10 @@ struct ProfileInfoModel {
         self.firstName = profileInfo.firstName ?? ""
         self.lastName = profileInfo.lastName ?? ""
         self.login = profileInfo.login ?? ""
+        self.calories = profileInfo.calories ?? ""
+        self.proteins = profileInfo.proteins ?? ""
+        self.fats = profileInfo.fats ?? ""
+        self.carbohydrate = profileInfo.carbohydrate ?? ""
     }
     
     init(firstName: String = "" , lastName: String = "", login: String = "") {

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ProfileViewModelProtocol {
-    var profileInfo: ProfileInfoModel { get }
+    var profileInfo: ProfileInfoModel { get set }
 }
 
 final class ProfileViewModel: ProfileViewModelProtocol {

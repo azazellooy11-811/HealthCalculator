@@ -89,9 +89,11 @@ class CalculateViewModel: CalculateViewModelProtocol {
         let fats = (0.3 * Double(activeCcal)) / 9 //Int(1.06 * Double(weight))
         let carbohydrate = (0.4 * Double(activeCcal)) / 4 //Int(2.75208 * Double(weight))
         var result = CaloriesModel(calories: activeCcal, proteins: Int(proteins), fats: Int(fats), carbohydrate: Int(carbohydrate))
-        var profileInfoForAdd = ProfileInfoPersistent.fetchProfileInfo(login: profileInfo.login)
         
-        ProfileInfoPersistent.save(ProfileInfoModel(firstName: profileInfoForAdd.firstName, lastName: profileInfoForAdd.lastName, login: profileInfoForAdd.login, calories: String(result.calories), proteins: String(result.proteins), fats: String(result.fats), carbohydrate: String(result.carbohydrate)))
+        
+        let profileInfo = ProfileInfoModel(firstName: profileInfo.firstName, lastName: profileInfo.lastName, login: profileInfo.login, calories: String(result.calories), proteins: String(result.proteins), fats: String(result.fats), carbohydrate: String(result.carbohydrate))
+        ProfileInfoPersistent.updateProfileInfo(with: profileInfo)
+        
         return result
     }
 }

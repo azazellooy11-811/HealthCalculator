@@ -189,8 +189,21 @@ class CalculateScreenViewController: UIViewController {
         ageTextField.delegate = self
         weightTextField.delegate = self
         heightTextField.delegate = self
-        //setupGradient()
+        setupGradient()
         setupUI()
+        hideKeyboardWhenTappedAround()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        registerForKeyboardNotification()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        unregisterForKeyboardNotification()
     }
     
     // MARK: - Private Methods
@@ -344,3 +357,48 @@ extension CalculateScreenViewController: UITextFieldDelegate {
     }
 }
 
+// MARK: - Keyboard events
+private extension CalculateScreenViewController {
+    func registerForKeyboardNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow(_:)),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
+    func unregisterForKeyboardNotification() {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIResponder.keyboardWillShowNotification,
+                                                  object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIResponder.keyboardWillHideNotification,
+                                                  object: nil)
+    }
+    
+    @objc
+    func keyboardWillShow(_ notification: Notification) {
+        guard let frame =
+                notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]
+                as? CGRect  else { return }
+        view.largeContentImageInsets.bottom = frame.height + 50
+    }
+    
+    @objc
+    func keyboardWillHide() {
+        view.largeContentImageInsets.bottom = .zero - 50
+    }
+    
+    func hideKeyboardWhenTappedAround() {
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        view.addGestureRecognizer(recognizer)
+    }
+    
+    @objc
+    func hideKeyboard() {
+        view.endEditing(true)
+    }
+}

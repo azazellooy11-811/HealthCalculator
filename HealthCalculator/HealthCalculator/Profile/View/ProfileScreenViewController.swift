@@ -115,10 +115,10 @@ class ProfileScreenViewController: UIViewController {
     private func configure() {
         firstName.text = viewModel.profileInfo.firstName
         lastName.text = viewModel.profileInfo.lastName
-        caloriesLabel.text = viewModel.profileInfo.calories
-        proteinsLabel.text = viewModel.profileInfo.proteins
-        fatsLabel.text = viewModel.profileInfo.fats
-        carbohydrateLabel.text = viewModel.profileInfo.carbohydrate
+        caloriesLabel.text = "Calories: \(viewModel.profileInfo.calories)"
+        proteinsLabel.text = "Proteins: \(viewModel.profileInfo.proteins)"
+        fatsLabel.text = "Fats: \(viewModel.profileInfo.fats)"
+        carbohydrateLabel.text = "Carbohydrate: \(viewModel.profileInfo.carbohydrate)"
     }
     
     private func setupUI() {
@@ -187,3 +187,4 @@ class ProfileScreenViewController: UIViewController {
         self.view.layer.insertSublayer(gradientLayer, at: 0)
     }
 }
+
