@@ -90,10 +90,10 @@ class ProfileScreenViewController: UIViewController {
     }()
     
     // MARK: - Properties
-    var viewModel: ProfileViewModelProtocol
+    var login: String
     
-    init(viewModel: ProfileViewModelProtocol) {
-        self.viewModel = viewModel
+    init(login: String) {
+        self.login = login
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -108,17 +108,24 @@ class ProfileScreenViewController: UIViewController {
         view.backgroundColor = .white
         setupGradient()
         setupUI()
-        configure()
+        
         navigationController?.navigationBar.backgroundColor = .red
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("configure will use")
+        configure()
+        print("configure used")
     }
     // MARK: - Private Methods
     private func configure() {
-        firstName.text = viewModel.profileInfo.firstName
-        lastName.text = viewModel.profileInfo.lastName
-        caloriesLabel.text = "Calories: \(viewModel.profileInfo.calories)"
-        proteinsLabel.text = "Proteins: \(viewModel.profileInfo.proteins)"
-        fatsLabel.text = "Fats: \(viewModel.profileInfo.fats)"
-        carbohydrateLabel.text = "Carbohydrate: \(viewModel.profileInfo.carbohydrate)"
+        let profileInfo = ProfileInfoPersistent.fetchProfileInfo(login: login)
+        firstName.text = profileInfo.firstName
+        lastName.text = profileInfo.lastName
+        caloriesLabel.text = "Calories: \(profileInfo.calories)"
+        proteinsLabel.text = "Proteins: \(profileInfo.proteins)"
+        fatsLabel.text = "Fats: \(profileInfo.fats)"
+        carbohydrateLabel.text = "Carbohydrate: \(profileInfo.carbohydrate)"
     }
     
     private func setupUI() {

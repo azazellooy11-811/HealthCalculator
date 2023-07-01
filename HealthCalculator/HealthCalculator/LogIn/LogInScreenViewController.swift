@@ -75,11 +75,8 @@ class LogInScreenViewController: UIViewController {
         
         if KeychainManager.logInUser(login: login, password: password) {
             let profileInfo = ProfileInfoPersistent.fetchProfileInfo(login: login)
-            let viewModel = ProfileViewModel(profileInfo: profileInfo)
             
-            self.viewModel = viewModel
-            
-            navigationController?.pushViewController(TabBarController(profileScreenViewController: ProfileScreenViewController(viewModel: viewModel), profileInfo: profileInfo), animated: true)
+            navigationController?.pushViewController(TabBarController(login: login, profileInfo: profileInfo), animated: true)
             
 //            navigationController?.pushViewController(TabBarController(profileScreenViewController: ProfileScreenViewController(viewModel: viewModel), profileInfo: profileInfo), animated: true)
         } else {
