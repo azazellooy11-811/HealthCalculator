@@ -29,8 +29,8 @@ class CalculateViewModel: CalculateViewModelProtocol {
     var workout: Int = 0
     var goal: Goal = .weightGain
     
-    init(profileInfo: ProfileInfoModel) {
-        self.profileInfo = profileInfo
+    init(login: String) {
+        self.profileInfo = ProfileInfoPersistent.fetchProfileInfo(login: login)
     }
     
     func returnCalories() -> CaloriesModel {

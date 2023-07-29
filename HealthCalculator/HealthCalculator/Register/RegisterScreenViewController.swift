@@ -158,7 +158,7 @@ class RegisterScreenViewController: UIViewController {
                                                         lastName: lastName,
                                                         login: login))
             // TODO: - придумай тут что-нибудь, может алерт какой-нибудь
-            navigationController?.pushViewController(LoggedOutViewController(), animated: true)
+            navigationController?.pushViewController(TabBarController(login: login), animated: true)
         } else {
             let alert = UIAlertController(title: "Error".localized,
                                           message: "Пользователь не зарегистрирован! Попробуй снова".localized,
@@ -171,5 +171,4 @@ class RegisterScreenViewController: UIViewController {
 }
 
 extension RegisterScreenViewController: UITextFieldDelegate {
-    
 }

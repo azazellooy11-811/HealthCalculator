@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		360C679D2A3CA901002E13C1 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360C679C2A3CA901002E13C1 /* Gender.swift */; };
+		360CC0E42A507B3700A5D87B /* UIView+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360CC0E32A507B3700A5D87B /* UIView+Ex.swift */; };
 		3617B42C2A2A0DE400C3D891 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617B42B2A2A0DE400C3D891 /* AppDelegate.swift */; };
 		3617B4302A2A0DE400C3D891 /* LoggedOutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617B42F2A2A0DE400C3D891 /* LoggedOutViewController.swift */; };
 		3617B4352A2A0DE700C3D891 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3617B4342A2A0DE700C3D891 /* Assets.xcassets */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		360C679C2A3CA901002E13C1 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
+		360CC0E32A507B3700A5D87B /* UIView+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ex.swift"; sourceTree = "<group>"; };
 		3617B4282A2A0DE400C3D891 /* HealthCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3617B42B2A2A0DE400C3D891 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3617B42F2A2A0DE400C3D891 /* LoggedOutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedOutViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 			children = (
 				3617B4432A2A244300C3D891 /* UIColor+Ex.swift */,
 				3617B4462A2A281200C3D891 /* String+Ex.swift */,
+				360CC0E32A507B3700A5D87B /* UIView+Ex.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 				36CE5B092A3B5C28001F5D64 /* CalculateScreenViewController.swift in Sources */,
 				36BB2D122A37C0DB0051CED6 /* ProfileInfo+CoreDataProperties.swift in Sources */,
 				36CEB7DC2A3F4652004421EA /* CaloriesModel.swift in Sources */,
+				360CC0E42A507B3700A5D87B /* UIView+Ex.swift in Sources */,
 				36BB2D152A37C29B0051CED6 /* ProfileInfoPersistent.swift in Sources */,
 				36CE5B0B2A3C7F7D001F5D64 /* CalculateDataModel.swift in Sources */,
 				3617B4442A2A244400C3D891 /* UIColor+Ex.swift in Sources */,

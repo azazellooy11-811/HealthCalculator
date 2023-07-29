@@ -51,8 +51,10 @@ class ProfileScreenViewController: UIViewController {
         
         button.layer.cornerRadius = 30
         button.backgroundColor = .green
-        button.setTitle("Log out".localized, for: .normal)
+        button.setTitle("Удалить акк".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
+        
+        button.addTarget(self, action: #selector(deleteAcc), for: .touchUpInside)
         
         return button
     }()
@@ -118,6 +120,13 @@ class ProfileScreenViewController: UIViewController {
         print("configure used")
     }
     // MARK: - Private Methods
+    @objc
+    func deleteAcc() {
+        ProfileInfoPersistent.delete(from: login)
+        KeychainManager.deleteUser(login: login)
+        print("юзер удален")
+    }
+    
     private func configure() {
         let profileInfo = ProfileInfoPersistent.fetchProfileInfo(login: login)
         firstName.text = profileInfo.firstName

@@ -51,7 +51,7 @@ class CalculateScreenViewController: UIViewController {
     private lazy var genderContainerView: UIView = {
         let view = UIView()
         
-        view.layer.borderColor = UIColor(ciColor: .red).cgColor
+        view.backgroundColor = .red
         
         return view
     }()
@@ -148,16 +148,23 @@ class CalculateScreenViewController: UIViewController {
         button.setTitle("Log in".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self,
-                         action: #selector(returnResult),
+                         action: #selector(clickButton),
                          for: .touchUpInside)
         
         return button
     }()
     
     // MARK: - Properties
+    var isAnthropometricDataScreen = true //антропометрические данные
+    var isMobilityAndGoalScreen = false
+    
+    var isFirstClicked = false
+    
     var viewModel: CalculateViewModelProtocol
     var isSelected: Bool = false
     var selectedGender: Gender =  .female
+    var login: String
+    
     
     
     //    private(set) var isCheckedFemale: Bool = false {
@@ -172,7 +179,8 @@ class CalculateScreenViewController: UIViewController {
     //            }
     //        }
     
-    init(viewModel: CalculateViewModelProtocol) {
+    init(login: String, viewModel: CalculateViewModelProtocol) {
+        self.login = login
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -180,7 +188,7 @@ class CalculateScreenViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -192,6 +200,7 @@ class CalculateScreenViewController: UIViewController {
         setupGradient()
         setupUI()
         hideKeyboardWhenTappedAround()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -232,9 +241,45 @@ class CalculateScreenViewController: UIViewController {
     //        }
     //    }
     
+    private func setupMobilityAndGoalScreen() {
+        print("2")
+        ageLabel.text = "Среднее количество шагов в месяц"
+        ageTextField.text = "Количество шагов"
+        heightLabel.text = "Кардио тренировки в минутах за неделю"
+        heightTextField.text = "Кардио в минутах"
+        weightLabel.text = "Силовые тренировки в минутах за неделю"
+        weightTextField.text = "Силовые тренировки в минутах"
+        
+    }
+    
     @objc
+    private func clickButton() {
+        print("1")
+        isFirstClicked = !isFirstClicked
+        if isFirstClicked {
+            setupMobilityAndGoalScreen()
+        } else {
+            returnResult()
+        }
+        
+//        if isAnthropometricDataScreen {
+//            
+//            
+//        }
+//        isMobilityAndGoalScreen = true
+//        isAnthropometricDataScreen = false
+//        if isMobilityAndGoalScreen {
+//            setupMobilityAndGoalScreen()
+//            isMobilityAndGoalScreen = false
+//        } else {
+//            returnResult()
+//        }
+    }
+    
+   
     func returnResult() {
         print("g")
+        
         let result = viewModel.returnCalories()
         let alert = UIAlertController(title: "Error".localized,
                                       message: "калории \(result) ".localized,
@@ -247,11 +292,11 @@ class CalculateScreenViewController: UIViewController {
     
     private func setupUI() {
         view.addSubview(genderContainerView)
-        genderContainerView.addSubview(genderLabel)
-        view.addSubview(femaleCheckboxImageView)
-        genderContainerView.addSubview(maleLabel)
-        view.addSubview(maleCheckboxImageView)
-        genderContainerView.addSubview(femaleLabel)
+        genderContainerView.addSubviews([genderLabel,
+                                         femaleCheckboxImageView,
+                                         maleLabel,
+                                         maleCheckboxImageView,
+                                         femaleLabel])
         view.addSubview(ageLabel)
         view.addSubview(ageTextField)
         view.addSubview(heightLabel)
@@ -263,10 +308,11 @@ class CalculateScreenViewController: UIViewController {
         setupConstraints()
     }
     
-    private func setupConstraints() {
+   private func setupConstraints() {
         genderContainerView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(25)
-            make.leading.equalToSuperview().inset(25)
+            make.height.equalTo(100)
+            make.leading.trailing.equalToSuperview().inset(25)
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
         }
         
         genderLabel.snp.makeConstraints { make in
@@ -296,7 +342,7 @@ class CalculateScreenViewController: UIViewController {
         
         ageLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(25)
-            make.top.equalTo(genderContainerView.snp.top).inset(85)
+            make.top.equalTo(genderContainerView.snp.bottom)
         }
         
         ageTextField.snp.makeConstraints { make in
@@ -326,8 +372,9 @@ class CalculateScreenViewController: UIViewController {
         
         nextButton.snp.makeConstraints { make in
             make.height.equalTo(60)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.top.equalTo(ageTextField.snp.bottom).inset(2)
+            make.width.equalTo(view.frame.width / 2)
+            make.trailing.equalToSuperview().inset(20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }
     

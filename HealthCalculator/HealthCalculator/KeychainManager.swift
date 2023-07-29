@@ -47,4 +47,14 @@ final class KeychainManager {
             return false
         }
     }
+    
+    static func deleteUser(login: String) {
+        let query: [NSString: AnyObject] = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrAccount: login as AnyObject
+        ]
+        
+        let status = SecItemDelete(query as CFDictionary)
+        guard status == errSecSuccess || status == errSecItemNotFound else { return }
+    }
 }
