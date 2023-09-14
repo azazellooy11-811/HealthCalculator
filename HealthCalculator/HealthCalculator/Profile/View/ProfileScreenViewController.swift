@@ -16,13 +16,56 @@ class ProfileScreenViewController: UIViewController {
         return view
     }()
     
+    private lazy var rectangle: UIView = {
+        let view = UIView()
+        
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 50
+        view.backgroundColor = .white
+        view.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        print("rectangle")
+        return view
+    }()
+    
+    private lazy var cameraImage: UIImageView = {
+        let imageView = UIImageView()
+        
+        imageView.image = UIImage(named: "camera")
+        imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(addCameraImage))
+        
+        imageView.addGestureRecognizer(tapGR)
+        imageView.isUserInteractionEnabled = true
+        return imageView
+    }()
+    
+    private lazy var galleryImage: UIImageView = {
+        let imageView = UIImageView()
+        
+        imageView.image = UIImage(named: "gallery")
+        imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(addImage))
+        
+        imageView.addGestureRecognizer(tapGR)
+        imageView.isUserInteractionEnabled = true
+        return imageView
+    }()
+    
     private lazy var profileImage: UIImageView = {
         let imageView = UIImageView()
         
-        imageView.image = UIImage(named: "profile")
+        //imageView.image = UIImage(named: "profile")
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 50
         imageView.contentMode = .scaleAspectFill
+        
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        
+        imageView.addGestureRecognizer(tapGR)
+        imageView.isUserInteractionEnabled = true
+        print("profileImage")
         
         return imageView
     }()
@@ -51,10 +94,10 @@ class ProfileScreenViewController: UIViewController {
         
         button.layer.cornerRadius = 30
         button.backgroundColor = .green
-        button.setTitle("Удалить акк".localized, for: .normal)
+        button.setTitle("Выход".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
         
-        button.addTarget(self, action: #selector(deleteAcc), for: .touchUpInside)
+        button.addTarget(self, action: #selector(logout), for: .touchUpInside)
         
         return button
     }()
@@ -92,7 +135,11 @@ class ProfileScreenViewController: UIViewController {
     }()
     
     // MARK: - Properties
+    var showError: ((String) -> Void)?
     var login: String
+    private var isOpenedEditMenuProfileImage: Bool = false
+    private var imageName: String?
+    private var imageUrl = UserDefaults.standard.string(forKey: "imageUr")
     
     init(login: String) {
         self.login = login
@@ -106,25 +153,82 @@ class ProfileScreenViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .white
         setupGradient()
         setupUI()
+    }
+    
+    @objc func handleTap(sender: UITapGestureRecognizer) {
         
-        navigationController?.navigationBar.backgroundColor = .red
+        if sender.state == .ended {
+            EditMenuProfileImage()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         print("configure will use")
         configure()
         print("configure used")
+        
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        rectangle.frame = CGRect(x: Int(self.profileImage.frame.minX),
+                                 y: Int(self.profileImage.frame.minY),
+                                 width: 100,
+                                 height: 100)
+    }
+
     // MARK: - Private Methods
+    private func loadImageFromSavedPath() {
+        if let savedImagePath = UserDefaults.standard.string(forKey: "savedImagePath") {
+            let imageURL = URL(fileURLWithPath: savedImagePath)
+            if let imageData = try? Data(contentsOf: imageURL), let image = UIImage(data: imageData) {
+                profileImage.image = image
+            }
+        }
+    }
+    func handleResult(_ result: Result<[String], Error>) {
+        switch result {
+        case .success(let articles):
+            print(articles)
+        case .failure(let error):
+            DispatchQueue.main.async {
+                self.showError?(error.localizedDescription)
+            }
+        }
+    }
+    
     @objc
-    func deleteAcc() {
-        ProfileInfoPersistent.delete(from: login)
-        KeychainManager.deleteUser(login: login)
-        print("юзер удален")
+    func logout() {
+        UserDefaults.standard.set(false, forKey: "LOGGED_IN")
+        AppDelegate.shared.rootViewController.switchToLogout()
+//        navigationController?.popViewController(animated: true)
+        //        ProfileInfoPersistent.delete(from: login)
+        //        KeychainManager.deleteUser(login: login)
+    }
+    
+    @objc
+    private func addImage() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        
+        present(imagePicker, animated: true)
+    }
+    
+    @objc
+    private func addCameraImage() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerController.SourceType.camera
+            imagePicker.allowsEditing = false
+            present(imagePicker, animated: true)
+        } else {
+            print("photo is not avaible")
+        }
     }
     
     private func configure() {
@@ -135,9 +239,20 @@ class ProfileScreenViewController: UIViewController {
         proteinsLabel.text = "Proteins: \(profileInfo.proteins)"
         fatsLabel.text = "Fats: \(profileInfo.fats)"
         carbohydrateLabel.text = "Carbohydrate: \(profileInfo.carbohydrate)"
+        loadImageFromSavedPath()
+//        guard let imageUrl else { return }
+//        do {
+//            let url = URL(fileURLWithPath: imageUrl)
+//            let imageData = try Data(contentsOf: url)
+//            profileImage.image = UIImage(data: imageData)
+//        } catch let error {
+//            print(error)
+//        }
     }
     
     private func setupUI() {
+        view.addSubview(rectangle)
+        rectangle.addSubviews([cameraImage, galleryImage])
         view.addSubview(profileImage)
         view.addSubview(firstName)
         view.addSubview(lastName)
@@ -156,13 +271,15 @@ class ProfileScreenViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(15)
             make.width.equalTo(100)
             make.height.equalTo(100)
+            print("const profile image")
+            
         }
-        
+                
         firstName.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(profileImage.snp.bottom).offset(5)
         }
-        
+
         lastName.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(firstName.snp.bottom).offset(5)
@@ -193,6 +310,16 @@ class ProfileScreenViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.top.equalTo(fatsLabel.snp.bottom).offset(20)
         }
+        
+        cameraImage.snp.makeConstraints { make in
+            make.leading.top.equalToSuperview().inset(30)
+            make.width.height.equalTo(50)
+        }
+        
+        galleryImage.snp.makeConstraints { make in
+            make.trailing.top.equalToSuperview().inset(30)
+            make.width.height.equalTo(50)
+        }
     }
     
     private func setupGradient() {
@@ -202,5 +329,52 @@ class ProfileScreenViewController: UIViewController {
         gradientLayer.locations = [0.0, 1.0]
         self.view.layer.insertSublayer(gradientLayer, at: 0)
     }
+    
+    private func EditMenuProfileImage() {
+        isOpenedEditMenuProfileImage = !isOpenedEditMenuProfileImage
+        let width = isOpenedEditMenuProfileImage ? 300: 100
+        let height = isOpenedEditMenuProfileImage ? 110: 100
+        
+        if width == 100 {
+            cameraImage.isHidden = true
+            galleryImage.isHidden = true
+        } else {
+            cameraImage.isHidden = false
+            galleryImage.isHidden = false
+        }
+      
+        UIView.animate(withDuration: 1.0) {
+            self.rectangle.frame = CGRect(x: Int(self.profileImage.frame.minX), y: Int(self.profileImage.frame.minY), width: width, height: height)
+            self.rectangle.center = self.profileImage.center
+        }
+        
+    }
 }
 
+// MARK: - UIImagePickerControllerDelegate
+extension ProfileScreenViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let selectedImage = info[.originalImage] as? UIImage {
+            if let imageData = selectedImage.jpegData(compressionQuality: 1.0) {
+                guard let fm = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+                let fileName = UUID().uuidString + ".jpeg"
+                let fileUrl = fm.appendingPathComponent(fileName)
+                do {
+                    try imageData.write(to: fileUrl)
+                    UserDefaults.standard.set(fileUrl.path, forKey: "savedImagePath")
+                } catch let error {
+                    print(error)
+                }
+            }
+            
+            //UserDefaults.standard.set(url.path, forKey: "imageUr")
+        
+            profileImage.image = selectedImage
+        }
+        dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true)
+    }
+}

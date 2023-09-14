@@ -29,7 +29,7 @@ final class ProfileInfoPersistent {
             try context.save()
             print(context)
         } catch let error {
-            debugPrint("Save data error: \(error)")
+            debugPrint("Data saving error: \(error)")
         }
         
     }
@@ -38,7 +38,7 @@ final class ProfileInfoPersistent {
         let request = ProfileInfo.fetchRequest()
         let objects = try! context.fetch(request)
         guard let profileEntity = objects.first(where: { $0.login == login }) else
-        { return  ProfileInfoModel() }
+        { return ProfileInfoModel() }
         return ProfileInfoModel(profileInfo: profileEntity)
         //        do {
         //            let objects = try context.fetch(request)
@@ -69,14 +69,13 @@ final class ProfileInfoPersistent {
     }
     
     static func delete(from login: String) {
-        guard let description = NSEntityDescription.entity(forEntityName: "ProfileInfo",
-                                                           in: context) else { return }
-        let entity = ProfileInfo(entity: description,
-                                 insertInto: context)
-        
         do {
-            try context.delete(entity.self)
+            let request = ProfileInfo.fetchRequest()
+            let objects = try! context.fetch(request)
+            guard let profileEntity = objects.first(where: { $0.login == login }) else { return }
+            context.delete(profileEntity)
             try context.save()
+
         } catch {
             print("Delete image error: \(error)")
         }
@@ -84,10 +83,8 @@ final class ProfileInfoPersistent {
     }
     
     
-    private static func findAndConvert(login: String, entity: [ProfileInfo]) -> ProfileInfoModel {
-        //        let profiles: [ProfileInfoModel] = entity.map { ProfileInfoModel(profileInfo: $0) }
-        //        print("### \(profiles)")
-        guard let profileInfo = entity.first(where: { $0.login == login }) else { return ProfileInfoModel() }
-        return ProfileInfoModel(profileInfo: profileInfo)
-    }
+//    private static func findAndConvert(login: String, entity: [ProfileInfo]) -> ProfileInfoModel {
+//        guard let profileInfo = entity.first(where: { $0.login == login }) else { return ProfileInfoModel() }
+//        return ProfileInfoModel(profileInfo: profileInfo)
+//    }
 }

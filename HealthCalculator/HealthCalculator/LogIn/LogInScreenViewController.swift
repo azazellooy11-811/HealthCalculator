@@ -65,6 +65,7 @@ class LogInScreenViewController: UIViewController {
         view.backgroundColor = .white
         
         setupUI()
+        
     }
     
     // MARK: - Private Methods
@@ -74,9 +75,14 @@ class LogInScreenViewController: UIViewController {
               let password = passwordTextField.text else { return }
         
         if KeychainManager.logInUser(login: login, password: password) {
+            UserDefaults.standard.set(true, forKey: "LOGGED_IN")
+            UserDefaults.standard.set(login, forKey: "login")
+           
             let profileInfo = ProfileInfoPersistent.fetchProfileInfo(login: login)
+            AppDelegate.shared.rootViewController.switchToMainScreen(with: login)
             
-            navigationController?.pushViewController(TabBarController(login: login), animated: true)
+            
+            //navigationController?.pushViewController(TabBarController(login: login), animated: true)
             
 //            navigationController?.pushViewController(TabBarController(profileScreenViewController: ProfileScreenViewController(viewModel: viewModel), profileInfo: profileInfo), animated: true)
         } else {

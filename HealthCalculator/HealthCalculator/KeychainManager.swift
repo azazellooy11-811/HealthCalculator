@@ -56,5 +56,7 @@ final class KeychainManager {
         
         let status = SecItemDelete(query as CFDictionary)
         guard status == errSecSuccess || status == errSecItemNotFound else { return }
+        print("юзер удален успешно")
+        
     }
 }

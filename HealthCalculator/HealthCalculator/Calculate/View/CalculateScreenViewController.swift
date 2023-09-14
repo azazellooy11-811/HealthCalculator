@@ -48,26 +48,26 @@ class CalculateScreenViewController: UIViewController {
         return label
     }()
     
+    private lazy var thirdLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = "Набор веса/мышечной массы"
+        
+        return label
+    }()
+    
     private lazy var genderContainerView: UIView = {
         let view = UIView()
-        
-        view.backgroundColor = .red
         
         return view
     }()
     
     private lazy var femaleCheckboxImageView: UIButton = {
         let checkbox = UIButton.init(type: .custom)
-        //        checkbox.setImage(UIImage.init(named: "iconCheckboxOutlined"), for: .normal)
-        //        checkbox.setImage(UIImage.init(named: "iconCheckboxFilled"), for: .selected)
         checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
         checkbox.setImage(UIImage.checkmark, for: .selected)
-        //checkbox.setImage(UIImage.checkmark, for: .selected)
-        //checkbox.setImage(UIImage(systemName: "circlebadge"), for: .normal)
+        checkbox.addTarget(self, action: #selector(toggleFemaleCheckbox), for: .touchUpInside)
         
-        checkbox.addTarget(self, action: #selector(toggleCheckboxSelection), for: .touchUpInside)
-        //        view.image = State.unselect.image
-        //        view.contentMode = .center
         
         return checkbox
     }()
@@ -78,9 +78,20 @@ class CalculateScreenViewController: UIViewController {
         checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
         checkbox.setImage(UIImage.checkmark, for: .selected)
         
-        checkbox.addTarget(self, action: #selector(toggleCheckboxSelection), for: .touchUpInside)
+        checkbox.addTarget(self, action: #selector(toggleMaleCheckbox), for: .touchUpInside)
         //        view.image = State.unselect.image
         //        view.contentMode = .center
+        
+        return checkbox
+    }()
+    
+    private lazy var thirdCheckboxImageView: UIButton = {
+        let checkbox = UIButton.init(type: .custom)
+        
+        checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
+        checkbox.setImage(UIImage.checkmark, for: .selected)
+        
+        checkbox.addTarget(self, action: #selector(toggleCheckbox), for: .touchUpInside)
         
         return checkbox
     }()
@@ -163,21 +174,8 @@ class CalculateScreenViewController: UIViewController {
     var viewModel: CalculateViewModelProtocol
     var isSelected: Bool = false
     var selectedGender: Gender =  .female
+    var selectedGoal: Goal = .weightGain
     var login: String
-    
-    
-    
-    //    private(set) var isCheckedFemale: Bool = false {
-    //            didSet{
-    //                femaleCheckboxImageView.image = self.isCheckedFemale ? State.select.image : State.unselect.image
-    //            }
-    //        }
-    
-    //    private(set) var isCheckedMale: Bool = false {
-    //            didSet{
-    //                femaleCheckboxImageView.image = self.isCheckedFemale ? State.select.image : State.unselect.image
-    //            }
-    //        }
     
     init(login: String, viewModel: CalculateViewModelProtocol) {
         self.login = login
@@ -217,18 +215,43 @@ class CalculateScreenViewController: UIViewController {
     
     // MARK: - Private Methods
     @objc
-    func toggleCheckboxSelection() {
+    func toggleFemaleCheckbox() {
         femaleCheckboxImageView.isSelected = !femaleCheckboxImageView.isSelected
-        maleCheckboxImageView.isSelected = femaleCheckboxImageView.isSelected ? maleCheckboxImageView.isSelected : !maleCheckboxImageView.isSelected
-        
-        if femaleCheckboxImageView.isSelected {
-            maleCheckboxImageView.isSelected = false
+        maleCheckboxImageView.isSelected = false
+        thirdCheckboxImageView.isSelected = false
+        if isFirstClicked {
+            selectedGoal = .weightLoss
+        } else {
             selectedGender = .female
-        } else if maleCheckboxImageView.isSelected {
-            selectedGender = .male
-            femaleCheckboxImageView.isSelected = false
         }
-        
+    }
+    
+    @objc
+    func toggleMaleCheckbox() {
+        maleCheckboxImageView.isSelected = !maleCheckboxImageView.isSelected
+        femaleCheckboxImageView.isSelected = false
+        thirdCheckboxImageView.isSelected = false
+        if isFirstClicked {
+            selectedGoal = .weightRetention
+        } else {
+            selectedGender = .male
+        }
+    }
+    
+    @objc
+    func toggleCheckbox() {
+        thirdCheckboxImageView.isSelected = !thirdCheckboxImageView.isSelected
+        femaleCheckboxImageView.isSelected = false
+        maleCheckboxImageView.isSelected = false
+        if isFirstClicked {
+            selectedGoal = .weightGain
+        } else {
+            selectedGender = .male
+        }
+    }
+    
+    @objc
+    func toggleCheckboxSelection() {
     }
     
     //        print("g")
@@ -243,37 +266,35 @@ class CalculateScreenViewController: UIViewController {
     
     private func setupMobilityAndGoalScreen() {
         print("2")
+        genderLabel.text = "Цель"
+        femaleLabel.text = "Похудение"
+        maleLabel.text = "Сохранение веса/ Рекомпазиция"
         ageLabel.text = "Среднее количество шагов в месяц"
-        ageTextField.text = "Количество шагов"
+        ageTextField.text = ""
+        ageTextField.placeholder = "Количество шагов"
         heightLabel.text = "Кардио тренировки в минутах за неделю"
-        heightTextField.text = "Кардио в минутах"
+        heightTextField.text = ""
+        heightTextField.placeholder = "Кардио в минутах"
         weightLabel.text = "Силовые тренировки в минутах за неделю"
-        weightTextField.text = "Силовые тренировки в минутах"
+        weightTextField.text = ""
+        weightTextField.placeholder = "Силовые тренировки в минутах"
         
+        genderContainerView.addSubviews([thirdLabel ,thirdCheckboxImageView])
+        
+        thirdCheckboxImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.top.equalTo(maleCheckboxImageView.snp.bottom)
+        }
+        
+        thirdLabel.snp.makeConstraints { make in
+            make.leading.equalTo(thirdCheckboxImageView.snp.trailing).offset(10)
+            make.top.equalTo(maleLabel.snp.bottom).offset(2)
+        }
     }
     
     @objc
     private func clickButton() {
-        print("1")
-        isFirstClicked = !isFirstClicked
-        if isFirstClicked {
-            setupMobilityAndGoalScreen()
-        } else {
-            returnResult()
-        }
-        
-//        if isAnthropometricDataScreen {
-//            
-//            
-//        }
-//        isMobilityAndGoalScreen = true
-//        isAnthropometricDataScreen = false
-//        if isMobilityAndGoalScreen {
-//            setupMobilityAndGoalScreen()
-//            isMobilityAndGoalScreen = false
-//        } else {
-//            returnResult()
-//        }
+        navigationController?.pushViewController(MobilityAndGoalScreenViewController(login: login, viewModel: viewModel), animated: true)
     }
     
    
@@ -281,7 +302,7 @@ class CalculateScreenViewController: UIViewController {
         print("g")
         
         let result = viewModel.returnCalories()
-        let alert = UIAlertController(title: "Error".localized,
+        let alert = UIAlertController(title: "КБЖУ".localized,
                                       message: "калории \(result) ".localized,
                                       preferredStyle: .alert)
         let action = UIAlertAction(title: "OK".localized, style: .default)
@@ -325,8 +346,7 @@ class CalculateScreenViewController: UIViewController {
         }
         
         femaleLabel.snp.makeConstraints { make in
-            
-            make.leading.equalTo(femaleCheckboxImageView.snp.trailing).offset(5)
+            make.leading.equalTo(femaleCheckboxImageView.snp.trailing).offset(10)
             make.top.equalTo(genderLabel.snp.bottom)
         }
         
@@ -336,8 +356,8 @@ class CalculateScreenViewController: UIViewController {
         }
         
         maleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(maleCheckboxImageView.snp.trailing).offset(5)
-            make.top.equalTo(femaleLabel.snp.bottom)
+            make.leading.equalTo(maleCheckboxImageView.snp.trailing).offset(10)
+            make.top.equalTo(femaleLabel.snp.bottom).offset(2)
         }
         
         ageLabel.snp.makeConstraints { make in
