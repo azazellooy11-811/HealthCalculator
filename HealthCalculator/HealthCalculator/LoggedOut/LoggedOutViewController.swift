@@ -8,7 +8,7 @@
 import SnapKit
 import UIKit
 
-class LoggedOutViewController: UIViewController {   //Splash screen
+class LoggedOutViewController: UIViewController {
     // MARK: - GUI Variables
     private lazy var imageContainerView: UIView = {
         let view = UIView()
@@ -70,15 +70,13 @@ class LoggedOutViewController: UIViewController {   //Splash screen
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        
-        
         setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         if UserDefaults.standard.bool(forKey: "LOGGED_IN") {
             if let login = UserDefaults.standard.string(forKey: "login") {
-                AppDelegate.shared.rootViewController.switchToMainScreen(with: login )
+                navigationController?.pushViewController(TabBarController(login: login), animated: true)
             }
         }
     }
@@ -86,14 +84,13 @@ class LoggedOutViewController: UIViewController {   //Splash screen
     // MARK: - Private Methods
     @objc
     private func goToRegisterScreen() {
-        AppDelegate.shared.rootViewController.showRegisterScreen()
+        navigationController?.pushViewController(RegisterScreenViewController(), animated: true)
     }
     
     @objc
         private func goToLogInScreen() {
-            AppDelegate.shared.rootViewController.showLoginScreen()
-//            navigationController?.pushViewController(LogInScreenViewController(),
-//                                                     animated: true)
+            navigationController?.pushViewController(LogInScreenViewController(),
+                                                     animated: true)
         }
     
     private func setupUI() {

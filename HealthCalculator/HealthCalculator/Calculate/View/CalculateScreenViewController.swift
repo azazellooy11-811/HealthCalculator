@@ -26,16 +26,8 @@ class CalculateScreenViewController: UIViewController {
     private lazy var genderLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Gender"
+        label.text = "Gender".localized
         label.font = .boldSystemFont(ofSize: 18)
-        
-        return label
-    }()
-    
-    private lazy var maleLabel: UILabel = {
-        let label = UILabel()
-        
-        label.text = "male"
         
         return label
     }()
@@ -43,24 +35,20 @@ class CalculateScreenViewController: UIViewController {
     private lazy var femaleLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "female"
+        label.text = "female".localized
         
         return label
     }()
     
-    private lazy var thirdLabel: UILabel = {
+    private lazy var maleLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Набор веса/мышечной массы"
+        label.text = "male".localized
         
         return label
     }()
     
-    private lazy var genderContainerView: UIView = {
-        let view = UIView()
-        
-        return view
-    }()
+    private lazy var genderContainerView = UIView()
     
     private lazy var femaleCheckboxImageView: UIButton = {
         let checkbox = UIButton.init(type: .custom)
@@ -85,21 +73,10 @@ class CalculateScreenViewController: UIViewController {
         return checkbox
     }()
     
-    private lazy var thirdCheckboxImageView: UIButton = {
-        let checkbox = UIButton.init(type: .custom)
-        
-        checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
-        checkbox.setImage(UIImage.checkmark, for: .selected)
-        
-        checkbox.addTarget(self, action: #selector(toggleCheckbox), for: .touchUpInside)
-        
-        return checkbox
-    }()
-    
     private lazy var ageLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Age"
+        label.text = "Age".localized
         label.font = .boldSystemFont(ofSize: 18)
         
         return label
@@ -118,7 +95,7 @@ class CalculateScreenViewController: UIViewController {
     private lazy var heightLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Height"
+        label.text = "Height".localized
         label.font = .boldSystemFont(ofSize: 18)
         
         return label
@@ -136,7 +113,7 @@ class CalculateScreenViewController: UIViewController {
     private lazy var weightLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Weight"
+        label.text = "Weight".localized
         label.font = .boldSystemFont(ofSize: 18)
         
         return label
@@ -156,7 +133,7 @@ class CalculateScreenViewController: UIViewController {
         
         button.layer.cornerRadius = 30
         button.backgroundColor = .green
-        button.setTitle("Log in".localized, for: .normal)
+        button.setTitle("Next".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self,
                          action: #selector(clickButton),
@@ -166,14 +143,11 @@ class CalculateScreenViewController: UIViewController {
     }()
     
     // MARK: - Properties
-    var isAnthropometricDataScreen = true //антропометрические данные
-    var isMobilityAndGoalScreen = false
-    
     var isFirstClicked = false
     
     var viewModel: CalculateViewModelProtocol
     var isSelected: Bool = false
-    var selectedGender: Gender =  .female
+    var selectedGender: Gender?
     var selectedGoal: Goal = .weightGain
     var login: String
     
@@ -186,7 +160,7 @@ class CalculateScreenViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -218,7 +192,6 @@ class CalculateScreenViewController: UIViewController {
     func toggleFemaleCheckbox() {
         femaleCheckboxImageView.isSelected = !femaleCheckboxImageView.isSelected
         maleCheckboxImageView.isSelected = false
-        thirdCheckboxImageView.isSelected = false
         if isFirstClicked {
             selectedGoal = .weightLoss
         } else {
@@ -230,7 +203,6 @@ class CalculateScreenViewController: UIViewController {
     func toggleMaleCheckbox() {
         maleCheckboxImageView.isSelected = !maleCheckboxImageView.isSelected
         femaleCheckboxImageView.isSelected = false
-        thirdCheckboxImageView.isSelected = false
         if isFirstClicked {
             selectedGoal = .weightRetention
         } else {
@@ -239,71 +211,15 @@ class CalculateScreenViewController: UIViewController {
     }
     
     @objc
-    func toggleCheckbox() {
-        thirdCheckboxImageView.isSelected = !thirdCheckboxImageView.isSelected
-        femaleCheckboxImageView.isSelected = false
-        maleCheckboxImageView.isSelected = false
-        if isFirstClicked {
-            selectedGoal = .weightGain
-        } else {
-            selectedGender = .male
-        }
-    }
-    
-    @objc
-    func toggleCheckboxSelection() {
-    }
-    
-    //        print("g")
-    //        if femaleCheckboxImageView.isSelected {
-    //            selectedGender = .female
-    //            femaleCheckboxImageView.isSelected = !femaleCheckboxImageView.isSelected
-    //        } else if maleCheckboxImageView.isSelected {
-    //            femaleCheckboxImageView.isSelected = !femaleCheckboxImageView.isSelected
-    //            selectedGender = .male
-    //        }
-    //    }
-    
-    private func setupMobilityAndGoalScreen() {
-        print("2")
-        genderLabel.text = "Цель"
-        femaleLabel.text = "Похудение"
-        maleLabel.text = "Сохранение веса/ Рекомпазиция"
-        ageLabel.text = "Среднее количество шагов в месяц"
-        ageTextField.text = ""
-        ageTextField.placeholder = "Количество шагов"
-        heightLabel.text = "Кардио тренировки в минутах за неделю"
-        heightTextField.text = ""
-        heightTextField.placeholder = "Кардио в минутах"
-        weightLabel.text = "Силовые тренировки в минутах за неделю"
-        weightTextField.text = ""
-        weightTextField.placeholder = "Силовые тренировки в минутах"
-        
-        genderContainerView.addSubviews([thirdLabel ,thirdCheckboxImageView])
-        
-        thirdCheckboxImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.top.equalTo(maleCheckboxImageView.snp.bottom)
-        }
-        
-        thirdLabel.snp.makeConstraints { make in
-            make.leading.equalTo(thirdCheckboxImageView.snp.trailing).offset(10)
-            make.top.equalTo(maleLabel.snp.bottom).offset(2)
-        }
-    }
-    
-    @objc
     private func clickButton() {
         navigationController?.pushViewController(MobilityAndGoalScreenViewController(login: login, viewModel: viewModel), animated: true)
     }
     
-   
+    
     func returnResult() {
-        print("g")
-        
         let result = viewModel.returnCalories()
         let alert = UIAlertController(title: "КБЖУ".localized,
-                                      message: "калории \(result) ".localized,
+                                      message: "Калории: \(result.calories) ".localized,
                                       preferredStyle: .alert)
         let action = UIAlertAction(title: "OK".localized, style: .default)
         alert.addAction(action)
@@ -329,7 +245,7 @@ class CalculateScreenViewController: UIViewController {
         setupConstraints()
     }
     
-   private func setupConstraints() {
+    private func setupConstraints() {
         genderContainerView.snp.makeConstraints { make in
             make.height.equalTo(100)
             make.leading.trailing.equalToSuperview().inset(25)
@@ -419,8 +335,6 @@ extension CalculateScreenViewController: UITextFieldDelegate {
         let gender = femaleCheckboxImageView.isSelected ? Gender.female : Gender.male
         
         viewModel.get(gender: gender, age: ageInt , height: heightInt , weight: weightInt)
-        viewModel.get(steps: 5000, cardio: 10, workout: 10)
-        viewModel.get(goal: .weightLoss)
     }
 }
 

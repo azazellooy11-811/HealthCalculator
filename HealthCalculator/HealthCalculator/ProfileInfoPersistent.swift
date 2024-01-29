@@ -40,14 +40,6 @@ final class ProfileInfoPersistent {
         guard let profileEntity = objects.first(where: { $0.login == login }) else
         { return ProfileInfoModel() }
         return ProfileInfoModel(profileInfo: profileEntity)
-        //        do {
-        //            let objects = try context.fetch(request)
-        //            guard let profileEntity = objects.first(where: { $0.login == login }) else { return ProfileInfoModel() }
-        //            return ProfileInfoModel(profileInfo: profileEntity)
-        //        } catch let error {
-        //            debugPrint("Fetch data error: \(error)")
-        //            return ProfileInfoModel()
-        //        }
     }
     
     static func updateProfileInfo(with profile: ProfileInfoModel) {
@@ -79,12 +71,5 @@ final class ProfileInfoPersistent {
         } catch {
             print("Delete image error: \(error)")
         }
-        
     }
-    
-    
-//    private static func findAndConvert(login: String, entity: [ProfileInfo]) -> ProfileInfoModel {
-//        guard let profileInfo = entity.first(where: { $0.login == login }) else { return ProfileInfoModel() }
-//        return ProfileInfoModel(profileInfo: profileInfo)
-//    }
 }

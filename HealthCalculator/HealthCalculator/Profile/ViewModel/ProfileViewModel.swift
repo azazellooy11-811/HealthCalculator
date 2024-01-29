@@ -18,14 +18,3 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         self.login = login
     }
 }
-//protocol ProfileViewModelProtocol {
-//    var profileInfo: ProfileInfoModel { get set }
-//}
-//
-//final class ProfileViewModel: ProfileViewModelProtocol {
-//    var profileInfo: ProfileInfoModel
-//
-//    init(profileInfo: ProfileInfoModel) {
-//        self.profileInfo = profileInfo
-//    }
-//}

@@ -66,7 +66,8 @@ class CalculateViewModel: CalculateViewModelProtocol {
             startCcal = (10 * weight) + height - age - 161
             procentCcal = Int(Double(startCcal) * 0.1)
         }
-        
+        print(age)
+        print(height, weight)
 //        * для мужчин: 10 х вес (кг) + 6,25 x рост (см) – 5 х возраст (г) + 5 + (()*0,1) + (0,03 *количество шагов);
 //        * для женщин: 10 x вес (кг) + 6,25 x рост (см) – 5 x возраст (г) – 161 + (()*0,1) + (0,03 *количество шагов)
 
@@ -83,8 +84,9 @@ class CalculateViewModel: CalculateViewModelProtocol {
             let ccal = startCcal + procentCcal
             let procent = Int(Double(ccal) * 0.1)
             activeCcal = ccal + procent + steps + cardio + workout
+            print(activeCcal, steps, cardio, workout)
         }
-        
+        print(goal)
         let proteins = (0.3 * Double(activeCcal)) / 4 //Int(1.9125 * Double(weight))
         let fats = (0.3 * Double(activeCcal)) / 9 //Int(1.06 * Double(weight))
         let carbohydrate = (0.4 * Double(activeCcal)) / 4 //Int(2.75208 * Double(weight))

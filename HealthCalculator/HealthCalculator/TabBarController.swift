@@ -39,7 +39,7 @@ class TabBarController: UITabBarController {
             setupNavigationController(rootViewController: CalculateScreenViewController(login: login, viewModel: CalculateViewModel(login: login)),
                                       title: "Calculate",
                                       image: UIImage(systemName: "plus.forwardslash.minus")?.withConfiguration(UIImage.SymbolConfiguration(hierarchicalColor: .green)) ?? .add),
-            setupNavigationController(rootViewController: RegisterScreenViewController(),
+            setupNavigationController(rootViewController: RecipesViewController(viewModel: RecipesViewModel()),
                                       title: "Menu",
                                       image: UIImage(systemName: "menucard")?.withConfiguration(UIImage.SymbolConfiguration(hierarchicalColor: .green)) ?? .add)
         ]
@@ -52,7 +52,6 @@ class TabBarController: UITabBarController {
         navigationController.tabBarItem.title = title
         navigationController.tabBarItem.image = image
         rootViewController.navigationItem.title = title
-        //navigationController.navigationBar.prefersLargeTitles = true
         
         return navigationController
     }

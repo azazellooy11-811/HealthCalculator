@@ -56,7 +56,7 @@ class ProfileScreenViewController: UIViewController {
     private lazy var profileImage: UIImageView = {
         let imageView = UIImageView()
         
-        //imageView.image = UIImage(named: "profile")
+        imageView.image = UIImage(named: "profile")
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 50
         imageView.contentMode = .scaleAspectFill
@@ -202,10 +202,7 @@ class ProfileScreenViewController: UIViewController {
     @objc
     func logout() {
         UserDefaults.standard.set(false, forKey: "LOGGED_IN")
-        AppDelegate.shared.rootViewController.switchToLogout()
-//        navigationController?.popViewController(animated: true)
-        //        ProfileInfoPersistent.delete(from: login)
-        //        KeychainManager.deleteUser(login: login)
+        navigationController?.popViewController(animated: true)
     }
     
     @objc
@@ -240,14 +237,6 @@ class ProfileScreenViewController: UIViewController {
         fatsLabel.text = "Fats: \(profileInfo.fats)"
         carbohydrateLabel.text = "Carbohydrate: \(profileInfo.carbohydrate)"
         loadImageFromSavedPath()
-//        guard let imageUrl else { return }
-//        do {
-//            let url = URL(fileURLWithPath: imageUrl)
-//            let imageData = try Data(contentsOf: url)
-//            profileImage.image = UIImage(data: imageData)
-//        } catch let error {
-//            print(error)
-//        }
     }
     
     private func setupUI() {
@@ -271,7 +260,6 @@ class ProfileScreenViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(15)
             make.width.equalTo(100)
             make.height.equalTo(100)
-            print("const profile image")
             
         }
                 
@@ -366,9 +354,6 @@ extension ProfileScreenViewController: UIImagePickerControllerDelegate & UINavig
                     print(error)
                 }
             }
-            
-            //UserDefaults.standard.set(url.path, forKey: "imageUr")
-        
             profileImage.image = selectedImage
         }
         dismiss(animated: true)

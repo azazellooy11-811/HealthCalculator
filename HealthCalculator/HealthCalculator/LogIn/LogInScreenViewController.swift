@@ -79,12 +79,8 @@ class LogInScreenViewController: UIViewController {
             UserDefaults.standard.set(login, forKey: "login")
            
             let profileInfo = ProfileInfoPersistent.fetchProfileInfo(login: login)
-            AppDelegate.shared.rootViewController.switchToMainScreen(with: login)
             
-            
-            //navigationController?.pushViewController(TabBarController(login: login), animated: true)
-            
-//            navigationController?.pushViewController(TabBarController(profileScreenViewController: ProfileScreenViewController(viewModel: viewModel), profileInfo: profileInfo), animated: true)
+            navigationController?.pushViewController(TabBarController(login: login), animated: true)
         } else {
             let alert = UIAlertController(title: "Error".localized,
                                           message: "Логин или пароль неправильные! Попробуй снова".localized,

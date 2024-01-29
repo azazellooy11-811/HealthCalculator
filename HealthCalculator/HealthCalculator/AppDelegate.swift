@@ -11,14 +11,6 @@ import CoreData
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    static var shared: AppDelegate {
-        return UIApplication.shared.delegate as! AppDelegate
-    }
-    
-    var rootViewController: RootViewController {
-        return window!.rootViewController as! RootViewController
-    }
-    
     static var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Model")
         container.loadPersistentStores { description, error in
@@ -37,14 +29,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         
         if let window {
-//            let navigationController = UINavigationController()
-//            let loggedOutViewController = LoggedOutViewController()
-//            navigationController.viewControllers = [loggedOutViewController]
-            window.rootViewController = RootViewController()
+            let navigationController = UINavigationController()
+            let loggedOutViewController = LoggedOutViewController()
+            navigationController.viewControllers = [loggedOutViewController]
+            window.rootViewController = navigationController
             window.makeKeyAndVisible()
         }
         
         return true
     }
 }
-

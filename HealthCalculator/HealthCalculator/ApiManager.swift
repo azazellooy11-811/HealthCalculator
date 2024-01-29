@@ -16,7 +16,7 @@ final class ApiManager {
     private static var result: String = ""
     
     // MARK: - Methods
-    static func getRecipes(completion: @escaping (Result<[String], Error>) -> ()) {
+    static func getRecipes(completion: @escaping (Result<[DishModel], Error>) -> ()) {
         
         let stringUrl = baseUrl + "recipes/findByNutrients?" + "apiKey=" + apiKey + "&minCalories=250&maxCalories=600"
         
@@ -31,22 +31,38 @@ final class ApiManager {
         session.resume()
     }
     
+    static func getImageData(url: String, completion: @escaping (Result<Data, Error>) -> ()) {
+        guard let url = URL(string: url) else { return }
+        
+        let session = URLSession.shared.dataTask(with: url) { data, _, error in
+            if let data = data {
+                completion(.success(data))
+            }
+            
+            if let error = error {
+                completion(.failure(error))
+            }
+        }
+        
+        session.resume()
+    }
+    
     // Handle response
     private static func handleResponse(data: Data?,
                                        error: Error?,
-                                       completion: @escaping (Result<[String], Error>) -> ()) {
+                                       completion: @escaping (Result<[DishModel], Error>) -> ()) {
         if let error {
             completion(.failure(NetworkingError.networkingError(error)))
         } else if let data {
-            let json = try? JSONSerialization.jsonObject(with: data, options: [])
-            print(json ?? "")
             
-//            do {
-//                let model = try JSONDecoder().decode(result, from: data)
-//                completion(.success(model.articles))
-//            } catch let decodeError {
-//                completion(.failure(decodeError))
-//            }
+            //let json = try? JSONSerialization.jsonObject(with: data, options: [])
+            
+            do {
+                let model = try JSONDecoder().decode([DishModel].self, from: data)
+                completion(.success(model))
+            } catch let decodeError {
+                completion(.failure(decodeError))
+            }
         } else {
             completion(.failure(NetworkingError.unknown))
         }

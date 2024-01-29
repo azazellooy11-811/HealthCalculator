@@ -26,7 +26,7 @@ class MobilityAndGoalScreenViewController: UIViewController {
     private lazy var goalLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Goal"
+        label.text = "Goal".localized
         label.font = .boldSystemFont(ofSize: 18)
         
         return label
@@ -35,7 +35,7 @@ class MobilityAndGoalScreenViewController: UIViewController {
     private lazy var weightLossLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "weightLoss"
+        label.text = "weightLoss".localized
         
         return label
     }()
@@ -43,7 +43,7 @@ class MobilityAndGoalScreenViewController: UIViewController {
     private lazy var weightRetentionLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "weightRetention"
+        label.text = "weightRetention".localized
         
         return label
     }()
@@ -51,16 +51,12 @@ class MobilityAndGoalScreenViewController: UIViewController {
     private lazy var weightGainLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "weightGain"
+        label.text = "weightGain".localized
         
         return label
     }()
     
-    private lazy var goalContainerView: UIView = {
-        let view = UIView()
-        
-        return view
-    }()
+    private lazy var goalContainerView = UIView()
     
     private lazy var weightLossImageView: UIButton = {
         let radioButton = UIButton.init(type: .custom)
@@ -97,7 +93,7 @@ class MobilityAndGoalScreenViewController: UIViewController {
     private lazy var stepsLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Среднее количество шагов в месяц"
+        label.text = "Average number of steps per month".localized
         label.font = .boldSystemFont(ofSize: 18)
         
         return label
@@ -106,7 +102,7 @@ class MobilityAndGoalScreenViewController: UIViewController {
     private lazy var stepsTextField: UITextField = {
         let textField = UITextField()
         
-        textField.placeholder = "Количество шагов".localized
+        textField.placeholder = "number of steps".localized
         textField.borderStyle = .roundedRect
         
         
@@ -116,7 +112,7 @@ class MobilityAndGoalScreenViewController: UIViewController {
     private lazy var cardioLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Кардио тренировки в минутах за неделю"
+        label.text = "Cardio training in minutes in a week".localized
         label.font = .boldSystemFont(ofSize: 18)
         
         return label
@@ -125,7 +121,7 @@ class MobilityAndGoalScreenViewController: UIViewController {
     private lazy var cardioTextField: UITextField = {
         let textField = UITextField()
         
-        textField.placeholder = "Кардио в минутах".localized
+        textField.placeholder = "cardio in minutes".localized
         textField.borderStyle = .roundedRect
         
         return textField
@@ -134,7 +130,7 @@ class MobilityAndGoalScreenViewController: UIViewController {
     private lazy var trainingLabel: UILabel = {
         let label = UILabel()
         
-        label.text = "Силовые тренировки в минутах"
+        label.text = "Strength training in minutes".localized
         label.font = .boldSystemFont(ofSize: 18)
         
         return label
@@ -143,7 +139,7 @@ class MobilityAndGoalScreenViewController: UIViewController {
     private lazy var trainingTextField: UITextField = {
         let textField = UITextField()
         
-        textField.placeholder = "Силовые тренировки в минутах".localized
+        textField.placeholder = "strength training in minutes".localized
         textField.borderStyle = .roundedRect
         
         return textField
@@ -220,11 +216,14 @@ class MobilityAndGoalScreenViewController: UIViewController {
     
     @objc
     func returnResult() {
-        print("g")
-        
         let result = viewModel.returnCalories()
         let alert = UIAlertController(title: "КБЖУ".localized,
-                                      message: "калории \(result) ".localized,
+                                      message: """
+                                      Калории: \(result.calories) \n
+                                      Белки: \(result.proteins) \n
+                                      Жиры: \(result.fats) \n
+                                      Углеводы: \(result.carbohydrate)
+                                      """.localized,
                                       preferredStyle: .alert)
         let action = UIAlertAction(title: "OK".localized, style: .default)
         alert.addAction(action)
@@ -348,8 +347,6 @@ extension MobilityAndGoalScreenViewController: UITextFieldDelegate {
               let stepsInt = Int(steps),
               let cardioInt = Int(cardio),
               let workoutInt = Int(workout) else { return }
-        
-        //let gender = femaleCheckboxImageView.isSelected ? Gender.female : Gender.male
         
         viewModel.get(steps: stepsInt, cardio: cardioInt, workout: workoutInt)
         viewModel.get(goal: selectedGoal)
