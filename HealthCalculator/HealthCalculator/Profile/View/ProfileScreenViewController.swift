@@ -23,7 +23,6 @@ class ProfileScreenViewController: UIViewController {
         view.layer.cornerRadius = 50
         view.backgroundColor = .white
         view.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        print("rectangle")
         return view
     }()
     
@@ -202,7 +201,7 @@ class ProfileScreenViewController: UIViewController {
     @objc
     func logout() {
         UserDefaults.standard.set(false, forKey: "LOGGED_IN")
-        navigationController?.popViewController(animated: true)
+        (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(LoggedOutViewController())
     }
     
     @objc
