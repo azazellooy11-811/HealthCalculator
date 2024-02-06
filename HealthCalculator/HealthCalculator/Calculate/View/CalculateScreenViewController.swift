@@ -9,18 +9,18 @@ import UIKit
 import SnapKit
 
 class CalculateScreenViewController: UIViewController {
-    enum State {
-        case select, unselect
-        
-        var image: UIImage {
-            switch self {
-            case .select:
-                return UIImage.checkmark
-            case .unselect:
-                return UIImage(systemName: "circlebadge") ?? UIImage.add
-            }
-        }
-    }
+//    enum State {
+//        case select, unselect
+//
+//        var image: UIImage {
+//            switch self {
+//            case .select:
+//                return UIImage.checkmark
+//            case .unselect:
+//                return UIImage(systemName: "circlebadge") ?? UIImage.add
+//            }
+//        }
+//    }
     
     // MARK: - GUI Variables
     private lazy var genderLabel: UILabel = {
@@ -67,8 +67,6 @@ class CalculateScreenViewController: UIViewController {
         checkbox.setImage(UIImage.checkmark, for: .selected)
         
         checkbox.addTarget(self, action: #selector(toggleMaleCheckbox), for: .touchUpInside)
-        //        view.image = State.unselect.image
-        //        view.contentMode = .center
         
         return checkbox
     }()
@@ -87,7 +85,6 @@ class CalculateScreenViewController: UIViewController {
         
         textField.placeholder = "age".localized
         textField.borderStyle = .roundedRect
-        
         
         return textField
     }()
@@ -143,12 +140,11 @@ class CalculateScreenViewController: UIViewController {
     }()
     
     // MARK: - Properties
-    var isFirstClicked = false
-    
     var viewModel: CalculateViewModelProtocol
-    var isSelected: Bool = false
+    //var isSelected: Bool = false
     var selectedGender: Gender?
     var selectedGoal: Goal = .weightGain
+    var isButtonBlocked = true
     var login: String
     
     init(login: String, viewModel: CalculateViewModelProtocol) {
@@ -192,10 +188,10 @@ class CalculateScreenViewController: UIViewController {
     func toggleFemaleCheckbox() {
         femaleCheckboxImageView.isSelected = !femaleCheckboxImageView.isSelected
         maleCheckboxImageView.isSelected = false
-        if isFirstClicked {
-            selectedGoal = .weightLoss
-        } else {
+        if femaleCheckboxImageView.isSelected {
             selectedGender = .female
+        } else {
+            selectedGender = nil
         }
     }
     
@@ -203,27 +199,39 @@ class CalculateScreenViewController: UIViewController {
     func toggleMaleCheckbox() {
         maleCheckboxImageView.isSelected = !maleCheckboxImageView.isSelected
         femaleCheckboxImageView.isSelected = false
-        if isFirstClicked {
-            selectedGoal = .weightRetention
-        } else {
+        if maleCheckboxImageView.isSelected {
             selectedGender = .male
+        } else {
+            selectedGender = nil
         }
     }
     
     @objc
     private func clickButton() {
-        navigationController?.pushViewController(MobilityAndGoalScreenViewController(login: login, viewModel: viewModel), animated: true)
+        view.endEditing(true)
+        guard let gender = selectedGender, !isButtonBlocked else { return setAlert(title: "Ошибка!",
+                                                          message: "Заполните все поля",
+                                                          preferredStyle: .alert) }
+            viewModel.get(gender: gender)
+            print("элсе кнопка")
+            navigationController?.pushViewController(MobilityAndGoalScreenViewController(login: login, viewModel: viewModel), animated: true)
     }
     
-    
-    func returnResult() {
-        let result = viewModel.returnCalories()
-        let alert = UIAlertController(title: "КБЖУ".localized,
-                                      message: "Калории: \(result.calories) ".localized,
-                                      preferredStyle: .alert)
+    private func setAlert(title: String, message: String, preferredStyle: UIAlertController.Style) {
+        let alert = UIAlertController(title: title.localized,
+                                      message: message.localized,
+                                      preferredStyle: preferredStyle)
         let action = UIAlertAction(title: "OK".localized, style: .default)
         alert.addAction(action)
         present(alert, animated: true)
+        
+    }
+    
+    func returnResult() {
+        let result = viewModel.returnCalories()
+        setAlert(title: "КБЖУ",
+                 message: "Калории: \(result.calories) ",
+                 preferredStyle: .alert)
     }
     
     
@@ -324,21 +332,26 @@ class CalculateScreenViewController: UIViewController {
 }
 
 extension CalculateScreenViewController: UITextFieldDelegate {
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let age = ageTextField.text,
-              let height = heightTextField.text,
-              let weight = weightTextField.text,
-              let ageInt = Int(age),
-              let heightInt = Int(height),
-              let weightInt = Int(weight) else { return }
-        
-        let gender = femaleCheckboxImageView.isSelected ? Gender.female : Gender.male
-        
-        viewModel.get(gender: gender, age: ageInt , height: heightInt , weight: weightInt)
+        if let age = ageTextField.text,
+           let height = heightTextField.text,
+           let weight = weightTextField.text,
+           let ageInt = Int(age),
+           let heightInt = Int(height),
+           let weightInt = Int(weight) {
+            isButtonBlocked = false
+            
+            viewModel.get(age: ageInt , height: heightInt , weight: weightInt)
+            
+        } else {
+            return isButtonBlocked = true
+        }
     }
 }
 
 // MARK: - Keyboard events
+
 private extension CalculateScreenViewController {
     func registerForKeyboardNotification() {
         NotificationCenter.default.addObserver(self,

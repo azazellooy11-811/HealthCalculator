@@ -8,7 +8,8 @@
 import UIKit
 
 protocol CalculateViewModelProtocol {
-    func get(gender: Gender, age: Int, height: Int, weight: Int)
+    func get(gender: Gender)
+    func get(age: Int, height: Int, weight: Int)
     func get(steps: Int, cardio: Int, workout: Int)
     func get(goal: Goal)
     func returnCalories() -> CaloriesModel
@@ -46,9 +47,11 @@ class CalculateViewModel: CalculateViewModelProtocol {
         self.cardio = cardio / 7
         self.workout = (5 + workout )/7
     }
-    
-    func get(gender: Gender, age: Int, height: Int, weight: Int) {
+    func get(gender: Gender) {
         self.gender = gender
+    }
+    
+    func get(age: Int, height: Int, weight: Int) {
         self.age = 5 * age
         self.height = Int(6.25 * Double(height))
         self.weight = weight
