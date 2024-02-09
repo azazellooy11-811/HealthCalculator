@@ -13,7 +13,6 @@
 		3617B4302A2A0DE400C3D891 /* LoggedOutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617B42F2A2A0DE400C3D891 /* LoggedOutViewController.swift */; };
 		3617B4352A2A0DE700C3D891 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3617B4342A2A0DE700C3D891 /* Assets.xcassets */; };
 		3617B4382A2A0DE700C3D891 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3617B4362A2A0DE700C3D891 /* LaunchScreen.storyboard */; };
-		3617B4422A2A14C700C3D891 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3617B4412A2A14C700C3D891 /* SnapKit */; };
 		3617B4442A2A244400C3D891 /* UIColor+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617B4432A2A244300C3D891 /* UIColor+Ex.swift */; };
 		3617B4472A2A281200C3D891 /* String+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617B4462A2A281200C3D891 /* String+Ex.swift */; };
 		3617B44A2A2A28AB00C3D891 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3617B44C2A2A28AB00C3D891 /* Localizable.strings */; };
@@ -43,6 +42,7 @@
 		36CEB7D52A3F42C2004421EA /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CEB7D42A3F42C2004421EA /* Goal.swift */; };
 		36CEB7D92A3F43DC004421EA /* CalculateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CEB7D82A3F43DC004421EA /* CalculateViewModel.swift */; };
 		36CEB7DC2A3F4652004421EA /* CaloriesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CEB7DB2A3F4652004421EA /* CaloriesModel.swift */; };
+		36DDF9E72B7651700048B810 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 36DDF9E62B7651700048B810 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3617B4422A2A14C700C3D891 /* SnapKit in Frameworks */,
+				36DDF9E72B7651700048B810 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,7 +310,7 @@
 			);
 			name = HealthCalculator;
 			packageProductDependencies = (
-				3617B4412A2A14C700C3D891 /* SnapKit */,
+				36DDF9E62B7651700048B810 /* SnapKit */,
 			);
 			productName = HealthCalculator;
 			productReference = 3617B4282A2A0DE400C3D891 /* HealthCalculator.app */;
@@ -342,7 +342,7 @@
 			);
 			mainGroup = 3617B41F2A2A0DE400C3D891;
 			packageReferences = (
-				3617B4402A2A14C700C3D891 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				36DDF9E52B76516F0048B810 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = 3617B4292A2A0DE400C3D891 /* Products */;
 			projectDirPath = "";
@@ -627,9 +627,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3617B4402A2A14C700C3D891 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		36DDF9E52B76516F0048B810 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.0.0;
@@ -638,9 +638,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3617B4412A2A14C700C3D891 /* SnapKit */ = {
+		36DDF9E62B7651700048B810 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3617B4402A2A14C700C3D891 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = 36DDF9E52B76516F0048B810 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -177,7 +177,7 @@ class ProfileScreenViewController: UIViewController {
                                  width: 100,
                                  height: 100)
     }
-
+    
     // MARK: - Private Methods
     private func loadImageFromSavedPath() {
         if let savedImagePath = UserDefaults.standard.string(forKey: "savedImagePath") {
@@ -201,7 +201,10 @@ class ProfileScreenViewController: UIViewController {
     @objc
     func logout() {
         UserDefaults.standard.set(false, forKey: "LOGGED_IN")
-        (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(LoggedOutViewController())
+        let navigationController = UINavigationController()
+        let loggedOutViewController = LoggedOutViewController()
+        navigationController.viewControllers = [loggedOutViewController]
+        (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(navigationController)
     }
     
     @objc
@@ -261,12 +264,12 @@ class ProfileScreenViewController: UIViewController {
             make.height.equalTo(100)
             
         }
-                
+        
         firstName.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(profileImage.snp.bottom).offset(5)
         }
-
+        
         lastName.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(firstName.snp.bottom).offset(5)
@@ -329,7 +332,7 @@ class ProfileScreenViewController: UIViewController {
             cameraImage.isHidden = false
             galleryImage.isHidden = false
         }
-      
+        
         UIView.animate(withDuration: 1.0) {
             self.rectangle.frame = CGRect(x: Int(self.profileImage.frame.minX), y: Int(self.profileImage.frame.minY), width: width, height: height)
             self.rectangle.center = self.profileImage.center

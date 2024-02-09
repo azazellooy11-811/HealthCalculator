@@ -78,7 +78,7 @@ class LogInScreenViewController: UIViewController {
             UserDefaults.standard.set(true, forKey: "LOGGED_IN")
             UserDefaults.standard.set(login, forKey: "login")
            
-            let profileInfo = ProfileInfoPersistent.fetchProfileInfo(login: login)
+//            let profileInfo = ProfileInfoPersistent.fetchProfileInfo(login: login)
             
             navigationController?.pushViewController(TabBarController(login: login), animated: true)
         } else {

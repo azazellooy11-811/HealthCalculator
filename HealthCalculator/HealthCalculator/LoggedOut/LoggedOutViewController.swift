@@ -46,8 +46,8 @@ class LoggedOutViewController: UIViewController {
         button.setTitle("Log in".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self,
-                                 action: #selector(goToLogInScreen),
-                                 for: .touchUpInside)
+                         action: #selector(goToLogInScreen),
+                         for: .touchUpInside)
         
         return button
     }()
@@ -64,13 +64,14 @@ class LoggedOutViewController: UIViewController {
                          for: .touchUpInside)
         return button
     }()
-
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
         setupUI()
+        print("я создался")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,10 +89,10 @@ class LoggedOutViewController: UIViewController {
     }
     
     @objc
-        private func goToLogInScreen() {
-            navigationController?.pushViewController(LogInScreenViewController(),
-                                                     animated: true)
-        }
+    private func goToLogInScreen() {
+        navigationController?.pushViewController(LogInScreenViewController(),
+                                                 animated: true)
+    }
     
     private func setupUI() {
         view.addSubview(imageContainerView)
@@ -120,7 +121,7 @@ class LoggedOutViewController: UIViewController {
         logInButton.snp.makeConstraints { make in
             make.height.equalTo(60)
         }
-
+        
         registerButton.snp.makeConstraints { make in
             make.height.equalTo(60)
         }

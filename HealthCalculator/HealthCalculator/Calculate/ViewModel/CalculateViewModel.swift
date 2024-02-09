@@ -81,7 +81,7 @@ class CalculateViewModel: CalculateViewModelProtocol {
             activeCcal = ccal - procent + steps + cardio + workout
         case .weightRetention:
             let ccal = startCcal + procentCcal
-            let procent = Int(Double(ccal) * 0.1)
+            _ = Int(Double(ccal) * 0.1)
             activeCcal = ccal + steps + cardio + workout
         case .weightGain:
             let ccal = startCcal + procentCcal
@@ -93,7 +93,7 @@ class CalculateViewModel: CalculateViewModelProtocol {
         let proteins = (0.3 * Double(activeCcal)) / 4 //Int(1.9125 * Double(weight))
         let fats = (0.3 * Double(activeCcal)) / 9 //Int(1.06 * Double(weight))
         let carbohydrate = (0.4 * Double(activeCcal)) / 4 //Int(2.75208 * Double(weight))
-        var result = CaloriesModel(calories: activeCcal, proteins: Int(proteins), fats: Int(fats), carbohydrate: Int(carbohydrate))
+        let result = CaloriesModel(calories: activeCcal, proteins: Int(proteins), fats: Int(fats), carbohydrate: Int(carbohydrate))
         
         
         let profileInfo = ProfileInfoModel(firstName: profileInfo.firstName, lastName: profileInfo.lastName, login: profileInfo.login, calories: String(result.calories), proteins: String(result.proteins), fats: String(result.fats), carbohydrate: String(result.carbohydrate))

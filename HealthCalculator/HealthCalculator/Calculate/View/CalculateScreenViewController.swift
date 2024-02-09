@@ -9,19 +9,6 @@ import UIKit
 import SnapKit
 
 class CalculateScreenViewController: UIViewController {
-//    enum State {
-//        case select, unselect
-//
-//        var image: UIImage {
-//            switch self {
-//            case .select:
-//                return UIImage.checkmark
-//            case .unselect:
-//                return UIImage(systemName: "circlebadge") ?? UIImage.add
-//            }
-//        }
-//    }
-    
     // MARK: - GUI Variables
     private lazy var genderLabel: UILabel = {
         let label = UILabel()
@@ -55,7 +42,6 @@ class CalculateScreenViewController: UIViewController {
         checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
         checkbox.setImage(UIImage.checkmark, for: .selected)
         checkbox.addTarget(self, action: #selector(toggleFemaleCheckbox), for: .touchUpInside)
-        
         
         return checkbox
     }()
@@ -141,7 +127,6 @@ class CalculateScreenViewController: UIViewController {
     
     // MARK: - Properties
     var viewModel: CalculateViewModelProtocol
-    //var isSelected: Bool = false
     var selectedGender: Gender?
     var selectedGoal: Goal = .weightGain
     var isButtonBlocked = true
@@ -210,11 +195,11 @@ class CalculateScreenViewController: UIViewController {
     private func clickButton() {
         view.endEditing(true)
         guard let gender = selectedGender, !isButtonBlocked else { return setAlert(title: "Ошибка!",
-                                                          message: "Заполните все поля",
-                                                          preferredStyle: .alert) }
-            viewModel.get(gender: gender)
-            print("элсе кнопка")
-            navigationController?.pushViewController(MobilityAndGoalScreenViewController(login: login, viewModel: viewModel), animated: true)
+                                                                                   message: "Заполните все поля",
+                                                                                   preferredStyle: .alert) }
+        viewModel.get(gender: gender)
+        print("элсе кнопка")
+        navigationController?.pushViewController(MobilityAndGoalScreenViewController(login: login, viewModel: viewModel), animated: true)
     }
     
     private func setAlert(title: String, message: String, preferredStyle: UIAlertController.Style) {
