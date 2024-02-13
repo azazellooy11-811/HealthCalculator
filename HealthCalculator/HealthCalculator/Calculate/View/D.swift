@@ -9,11 +9,12 @@ import UIKit
 
 class D: CalculateScreenViewController {
     let names = ["1", "2", "3"]
-    let count = 3
+    
     override func viewDidLoad() {
+        self.initLabels(names: names)
+        self.initCheckboxs(count: names.count)
         super.viewDidLoad()
         view.backgroundColor = .white
-        initLabels(names: names)
-        initCheckboxs(count: count)
+        
     }
 }

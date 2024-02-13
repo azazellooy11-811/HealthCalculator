@@ -166,6 +166,7 @@ class CalculateScreenViewController: UIViewController {
         setupGradient()
         setupUI()
         hideKeyboardWhenTappedAround()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -182,7 +183,6 @@ class CalculateScreenViewController: UIViewController {
     
     // MARK: - Private Methods
     func initLabels(names: [String]) {
-        
         names.forEach { name in
             let label = UILabel()
             
@@ -192,7 +192,7 @@ class CalculateScreenViewController: UIViewController {
     }
     
     func initCheckboxs(count: Int) {
-        for _ in 0..<count {
+        for _ in 0 ..< count {
             let checkbox = UIButton.init(type: .custom)
             
             checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
@@ -201,6 +201,7 @@ class CalculateScreenViewController: UIViewController {
             checkboxs.append(checkbox)
         }
     }
+
     
     @objc
     func toggleGenderCheckbox() {
@@ -252,6 +253,7 @@ class CalculateScreenViewController: UIViewController {
     
     private func setupUI() {
             view.addSubview(genderContainerView)
+        genderContainerView.addSubview(genderLabel)
             genderContainerView.addSubviews(labels)
             genderContainerView.addSubviews(checkboxs)
             view.addSubview(ageLabel)
@@ -272,9 +274,9 @@ class CalculateScreenViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
         }
         
-//        genderLabel.snp.makeConstraints { make in
-//            make.leading.top.equalToSuperview()
-//        }
+        genderLabel.snp.makeConstraints { make in
+            make.leading.top.equalToSuperview()
+        }
         
         var prevCheckbox: UIButton? = nil
         var prevLabel: UILabel? = nil
@@ -309,6 +311,8 @@ class CalculateScreenViewController: UIViewController {
                     make.top.equalTo(genderLabel.snp.bottom)
                 }
             }
+            prevLabel = label
+            prevCheckbox = checkbox
         }
         
 //        femaleCheckboxImageView.snp.makeConstraints { make in
