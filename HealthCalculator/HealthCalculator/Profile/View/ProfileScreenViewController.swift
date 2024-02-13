@@ -64,7 +64,6 @@ class ProfileScreenViewController: UIViewController {
         
         imageView.addGestureRecognizer(tapGR)
         imageView.isUserInteractionEnabled = true
-        print("profileImage")
         
         return imageView
     }()
@@ -72,7 +71,6 @@ class ProfileScreenViewController: UIViewController {
     private lazy var firstName: UILabel = {
         let label = UILabel()
         
-        label.text = "Azaliia"
         label.font = .boldSystemFont(ofSize: 18)
         label.contentMode = .center
         
@@ -82,10 +80,22 @@ class ProfileScreenViewController: UIViewController {
     private lazy var lastName: UILabel = {
         let label = UILabel()
         
-        label.text = "Halilova"
         label.font = .boldSystemFont(ofSize: 18)
         
         return label
+    }()
+    
+    private lazy var deleteAccountButton: UIButton = {
+        let button = UIButton()
+        
+        button.layer.cornerRadius = 30
+        button.backgroundColor = .green
+        button.setTitle("Delete account".localized, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        
+        button.addTarget(self, action: #selector(deleteAccount), for: .touchUpInside)
+        
+        return button
     }()
     
     private lazy var logOutButton: UIButton = {
@@ -93,7 +103,7 @@ class ProfileScreenViewController: UIViewController {
         
         button.layer.cornerRadius = 30
         button.backgroundColor = .green
-        button.setTitle("Выход".localized, for: .normal)
+        button.setTitle("Log out".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
         
         button.addTarget(self, action: #selector(logout), for: .touchUpInside)
@@ -187,6 +197,7 @@ class ProfileScreenViewController: UIViewController {
             }
         }
     }
+    
     func handleResult(_ result: Result<[String], Error>) {
         switch result {
         case .success(let articles):
@@ -196,6 +207,13 @@ class ProfileScreenViewController: UIViewController {
                 self.showError?(error.localizedDescription)
             }
         }
+    }
+    
+    @objc
+    func deleteAccount() {
+        ProfileInfoPersistent.delete(from: login)
+        KeychainManager.deleteUser(login: login)
+        logout()
     }
     
     @objc
@@ -248,6 +266,7 @@ class ProfileScreenViewController: UIViewController {
         view.addSubview(firstName)
         view.addSubview(lastName)
         view.addSubview(logOutButton)
+        view.addSubview(deleteAccountButton)
         view.addSubview(caloriesLabel)
         view.addSubview(proteinsLabel)
         view.addSubview(fatsLabel)
@@ -275,10 +294,16 @@ class ProfileScreenViewController: UIViewController {
             make.top.equalTo(firstName.snp.bottom).offset(5)
         }
         
-        logOutButton.snp.makeConstraints { make in
+        deleteAccountButton.snp.makeConstraints { make in
             make.height.equalTo(60)
             make.leading.trailing.equalToSuperview().inset(20)
             make.top.equalTo(lastName.snp.bottom).offset(20)
+        }
+        
+        logOutButton.snp.makeConstraints { make in
+            make.height.equalTo(60)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(deleteAccountButton.snp.bottom).offset(20)
         }
         
         caloriesLabel.snp.makeConstraints { make in

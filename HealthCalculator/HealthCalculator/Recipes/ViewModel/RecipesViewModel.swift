@@ -11,7 +11,6 @@ protocol RecipesViewModelProtocol {
     var reloadData: (() -> Void)? { get set }
     var showError: ((String) -> Void)? { get set }
     var reloadCell: ((Int) -> Void)? { get set }
-    
     var numberOfCells: Int { get }
     
     func getDish(for row: Int) -> DishCellViewModel
@@ -62,8 +61,6 @@ class RecipesViewModel: RecipesViewModelProtocol {
     }
     
     private func loadImage() {
-//        guard let url = URL(string: dish[row].imageUrl),
-//              let data = try? Data(contentsOf: url) else { return }
         for (index, dish) in dishes.enumerated() {
             ApiManager.getImageData(url: dish.imageUrl) { [weak self]
                 result in

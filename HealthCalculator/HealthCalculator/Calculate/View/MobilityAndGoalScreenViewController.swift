@@ -9,19 +9,6 @@ import UIKit
 import SnapKit
 
 class MobilityAndGoalScreenViewController: UIViewController {
-    enum State {
-        case select, unselect
-        
-        var image: UIImage {
-            switch self {
-            case .select:
-                return UIImage.checkmark
-            case .unselect:
-                return UIImage(systemName: "circlebadge") ?? UIImage.add
-            }
-        }
-    }
-    
     // MARK: - GUI Variables
     private lazy var goalLabel: UILabel = {
         let label = UILabel()
@@ -162,7 +149,8 @@ class MobilityAndGoalScreenViewController: UIViewController {
     // MARK: - Properties
     
     var viewModel: CalculateViewModelProtocol
-    var selectedGoal: Goal = .weightGain
+    var selectedGoal: Goal?
+    var isButtonBlocked = true
     var login: String
     
     init(login: String, viewModel: CalculateViewModelProtocol) {
@@ -174,7 +162,7 @@ class MobilityAndGoalScreenViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -214,22 +202,32 @@ class MobilityAndGoalScreenViewController: UIViewController {
         }
     }
     
+    private func setAlert(title: String, message: String, preferredStyle: UIAlertController.Style) {
+        let alert = UIAlertController(title: title.localized,
+                                      message: message.localized,
+                                      preferredStyle: preferredStyle)
+        let action = UIAlertAction(title: "OK".localized, style: .default)
+        alert.addAction(action)
+        present(alert, animated: true)
+        
+    }
+    
     @objc
     func returnResult() {
+        view.endEditing(true)
+        guard !isButtonBlocked else { return setAlert(title: "Ошибка!",
+                                                      message: "Заполните все поля",
+                                                      preferredStyle: .alert) }
         let result = viewModel.returnCalories()
-        let alert = UIAlertController(title: "КБЖУ".localized,
-                                      message: """
+        setAlert(title: "КБЖУ".localized,
+                 message: """
                                       Калории: \(result.calories) \n
                                       Белки: \(result.proteins) \n
                                       Жиры: \(result.fats) \n
                                       Углеводы: \(result.carbohydrate)
                                       """.localized,
-                                      preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK".localized, style: .default)
-        alert.addAction(action)
-        present(alert, animated: true)
+                 preferredStyle: .alert)
     }
-    
     
     private func setupUI() {
         view.addSubview(goalContainerView)
@@ -240,84 +238,83 @@ class MobilityAndGoalScreenViewController: UIViewController {
                                        weightLossImageView,
                                        weightRetentionImageView,
                                        weightGainImageView])
-        view.addSubview(stepsLabel)
-        view.addSubview(stepsTextField)
-        view.addSubview(cardioLabel)
-        view.addSubview(cardioTextField)
-        view.addSubview(trainingLabel)
-        view.addSubview(trainingTextField)
-        view.addSubview(showResultButton)
-        
+        view.addSubviews([stepsLabel,
+                          stepsTextField,
+                          cardioLabel,
+                          cardioTextField,
+                          trainingLabel,
+                          trainingTextField,
+                          showResultButton])
         setupConstraints()
     }
     
-   private func setupConstraints() {
-       goalContainerView.snp.makeConstraints { make in
+    private func setupConstraints() {
+        goalContainerView.snp.makeConstraints { make in
             make.height.equalTo(100)
             make.leading.trailing.equalToSuperview().inset(25)
             make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
         }
         
-       goalLabel.snp.makeConstraints { make in
+        goalLabel.snp.makeConstraints { make in
             make.leading.top.equalToSuperview()
         }
         
-       weightLossImageView.snp.makeConstraints { make in
+        weightLossImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.top.equalTo(goalLabel.snp.bottom)
         }
         
-       weightLossLabel.snp.makeConstraints { make in
+        weightLossLabel.snp.makeConstraints { make in
             make.leading.equalTo(weightLossImageView.snp.trailing).offset(10)
             make.top.equalTo(goalLabel.snp.bottom)
         }
         
-       weightRetentionImageView.snp.makeConstraints { make in
+        weightRetentionImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.top.equalTo(weightLossImageView.snp.bottom)
         }
         
-       weightRetentionLabel.snp.makeConstraints { make in
+        weightRetentionLabel.snp.makeConstraints { make in
             make.leading.equalTo(weightRetentionImageView.snp.trailing).offset(10)
             make.top.equalTo(weightLossLabel.snp.bottom).offset(2)
         }
-       
-       weightGainImageView.snp.makeConstraints { make in
+        
+        weightGainImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.top.equalTo(weightRetentionImageView.snp.bottom)
         }
         
-       weightGainLabel.snp.makeConstraints { make in
+        weightGainLabel.snp.makeConstraints { make in
             make.leading.equalTo(weightGainImageView.snp.trailing).offset(10)
             make.top.equalTo(weightRetentionLabel.snp.bottom).offset(2)
         }
         
-       stepsLabel.snp.makeConstraints { make in
+        stepsLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(25)
             make.top.equalTo(goalContainerView.snp.bottom)
         }
         
-       stepsTextField.snp.makeConstraints { make in
+        stepsTextField.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(25)
             make.top.equalTo(stepsLabel.snp.bottom).offset(5)
         }
         
-       cardioLabel.snp.makeConstraints { make in
+        cardioLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(25)
             make.top.equalTo(stepsTextField.snp.bottom).offset(25)
         }
         
-       cardioTextField.snp.makeConstraints { make in
+        cardioTextField.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(25)
             make.top.equalTo(cardioLabel.snp.bottom).offset(5)
         }
         
-       trainingLabel.snp.makeConstraints { make in
+        trainingLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(25)
             make.top.equalTo(cardioTextField.snp.bottom).offset(25)
         }
         
-       trainingTextField.snp.makeConstraints { make in
+        trainingTextField.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(25)
             make.top.equalTo(trainingLabel.snp.bottom).offset(5)
         }
@@ -341,15 +338,19 @@ class MobilityAndGoalScreenViewController: UIViewController {
 
 extension MobilityAndGoalScreenViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let steps = stepsTextField.text,
-              let cardio = cardioTextField.text,
-              let workout = trainingTextField.text,
-              let stepsInt = Int(steps),
-              let cardioInt = Int(cardio),
-              let workoutInt = Int(workout) else { return }
-        
-        viewModel.get(steps: stepsInt, cardio: cardioInt, workout: workoutInt)
-        viewModel.get(goal: selectedGoal)
+        if let steps = stepsTextField.text,
+           let cardio = cardioTextField.text,
+           let workout = trainingTextField.text,
+           let stepsInt = Int(steps),
+           let cardioInt = Int(cardio),
+           let workoutInt = Int(workout), let goal = selectedGoal {
+            isButtonBlocked = false
+            
+            viewModel.get(steps: stepsInt, cardio: cardioInt, workout: workoutInt)
+            viewModel.get(goal: goal)
+        } else {
+            return isButtonBlocked = true
+        }
     }
 }
 

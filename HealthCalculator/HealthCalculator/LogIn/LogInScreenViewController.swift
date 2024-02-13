@@ -77,18 +77,27 @@ class LogInScreenViewController: UIViewController {
         if KeychainManager.logInUser(login: login, password: password) {
             UserDefaults.standard.set(true, forKey: "LOGGED_IN")
             UserDefaults.standard.set(login, forKey: "login")
-           
-//            let profileInfo = ProfileInfoPersistent.fetchProfileInfo(login: login)
             
             navigationController?.pushViewController(TabBarController(login: login), animated: true)
+        } else if KeychainManager.status == errSecParam {
+            setAlert(title: "Error",
+                     message: "Логин или пароль неправильные! Попробуй снова",
+                     preferredStyle: .alert)
         } else {
-            let alert = UIAlertController(title: "Error".localized,
-                                          message: "Логин или пароль неправильные! Попробуй снова".localized,
-                                          preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK".localized, style: .default)
-            alert.addAction(action)
-            present(alert, animated: true)
+            setAlert(title: "Error",
+                     message: "Пользователь не найден, создайте нового пользователя",
+                     preferredStyle: .alert)
         }
+    }
+    
+    private func setAlert(title: String, message: String, preferredStyle: UIAlertController.Style) {
+        let alert = UIAlertController(title: title.localized,
+                                      message: message.localized,
+                                      preferredStyle: preferredStyle)
+        let action = UIAlertAction(title: "OK".localized, style: .default)
+        alert.addAction(action)
+        present(alert, animated: true)
+        
     }
     
     private func setupUI() {

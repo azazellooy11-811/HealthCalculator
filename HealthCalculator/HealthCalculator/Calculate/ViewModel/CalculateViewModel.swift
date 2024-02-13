@@ -20,7 +20,7 @@ class CalculateViewModel: CalculateViewModelProtocol {
     let profileInfo: ProfileInfoModel
     var startCcal: Int = 0
     var activeCcal: Int = 0
-    var procentCcal: Int = 0
+    var percentCcal: Int = 0
     var gender: Gender = .female
     var age: Int = 0
     var height: Int = 0
@@ -45,8 +45,9 @@ class CalculateViewModel: CalculateViewModelProtocol {
     func get(steps: Int, cardio: Int, workout: Int) {
         self.steps = Int(0.03 * Double(steps))
         self.cardio = cardio / 7
-        self.workout = (5 + workout )/7
+        self.workout = (5 + workout ) / 7
     }
+    
     func get(gender: Gender) {
         self.gender = gender
     }
@@ -58,45 +59,36 @@ class CalculateViewModel: CalculateViewModelProtocol {
     }
     
     func calculate() -> CaloriesModel {
-        // изначальные ккал 1505.3
-//        * для мужчин: 10 х вес (кг) + 6,25 x рост (см) – 5 х возраст (г) + 5;
-//        * для женщин: 10 x вес (кг) + 6,25 x рост (см) – 5 x возраст (г) – 161.
         switch gender {
         case .male:
             startCcal = (10 * weight) + height - age + 5
-            procentCcal = Int(Double(startCcal) * 0.1)
+            percentCcal = Int(Double(startCcal) * 0.1)
         case .female:
             startCcal = (10 * weight) + height - age - 161
-            procentCcal = Int(Double(startCcal) * 0.1)
+            percentCcal = Int(Double(startCcal) * 0.1)
         }
-        print(age)
-        print(height, weight)
-//        * для мужчин: 10 х вес (кг) + 6,25 x рост (см) – 5 х возраст (г) + 5 + (()*0,1) + (0,03 *количество шагов);
-//        * для женщин: 10 x вес (кг) + 6,25 x рост (см) – 5 x возраст (г) – 161 + (()*0,1) + (0,03 *количество шагов)
-
+        
         switch goal {
         case .weightLoss:
-            let ccal = startCcal + procentCcal
-            let procent = Int(Double(ccal) * 0.1)
-            activeCcal = ccal - procent + steps + cardio + workout
+            let ccal = startCcal + percentCcal
+            let percent = Int(Double(ccal) * 0.1)
+            activeCcal = ccal - percent + steps + cardio + workout
         case .weightRetention:
-            let ccal = startCcal + procentCcal
-            _ = Int(Double(ccal) * 0.1)
+            let ccal = startCcal + percentCcal
             activeCcal = ccal + steps + cardio + workout
         case .weightGain:
-            let ccal = startCcal + procentCcal
-            let procent = Int(Double(ccal) * 0.1)
-            activeCcal = ccal + procent + steps + cardio + workout
-            print(activeCcal, steps, cardio, workout)
+            let ccal = startCcal + percentCcal
+            let percent = Int(Double(ccal) * 0.1)
+            activeCcal = ccal + percent + steps + cardio + workout
         }
-        print(goal)
-        let proteins = (0.3 * Double(activeCcal)) / 4 //Int(1.9125 * Double(weight))
-        let fats = (0.3 * Double(activeCcal)) / 9 //Int(1.06 * Double(weight))
-        let carbohydrate = (0.4 * Double(activeCcal)) / 4 //Int(2.75208 * Double(weight))
+        
+        let proteins = (0.3 * Double(activeCcal)) / 4
+        let fats = (0.3 * Double(activeCcal)) / 9
+        let carbohydrate = (0.4 * Double(activeCcal))
+        
         let result = CaloriesModel(calories: activeCcal, proteins: Int(proteins), fats: Int(fats), carbohydrate: Int(carbohydrate))
-        
-        
         let profileInfo = ProfileInfoModel(firstName: profileInfo.firstName, lastName: profileInfo.lastName, login: profileInfo.login, calories: String(result.calories), proteins: String(result.proteins), fats: String(result.fats), carbohydrate: String(result.carbohydrate))
+        
         ProfileInfoPersistent.updateProfileInfo(with: profileInfo)
         
         return result

@@ -15,7 +15,6 @@ class RecipesViewController: UIViewController {
         layout.itemSize = CGSize(width: width, height: width)
         layout.minimumLineSpacing = 5
         layout.minimumInteritemSpacing = 5
-        //layout.scrollDirection = .horizontal
         
         let collectionView = UICollectionView(frame: CGRect(x: 0,
                                                             y: 0,

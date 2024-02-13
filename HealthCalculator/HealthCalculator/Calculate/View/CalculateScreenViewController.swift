@@ -41,7 +41,11 @@ class CalculateScreenViewController: UIViewController {
         let checkbox = UIButton.init(type: .custom)
         checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
         checkbox.setImage(UIImage.checkmark, for: .selected)
-        checkbox.addTarget(self, action: #selector(toggleFemaleCheckbox), for: .touchUpInside)
+        checkbox.isSelected = true
+        
+        checkbox.addTarget(self, action: #selector(toggleGenderCheckbox), for: .touchUpInside)
+        
+        checkbox.tag = 0
         
         return checkbox
     }()
@@ -52,7 +56,9 @@ class CalculateScreenViewController: UIViewController {
         checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
         checkbox.setImage(UIImage.checkmark, for: .selected)
         
-        checkbox.addTarget(self, action: #selector(toggleMaleCheckbox), for: .touchUpInside)
+        checkbox.addTarget(self, action: #selector(toggleGenderCheckbox), for: .touchUpInside)
+        
+        checkbox.tag = 1
         
         return checkbox
     }()
@@ -72,6 +78,8 @@ class CalculateScreenViewController: UIViewController {
         textField.placeholder = "age".localized
         textField.borderStyle = .roundedRect
         
+        textField.delegate = self
+        
         return textField
     }()
     
@@ -90,6 +98,8 @@ class CalculateScreenViewController: UIViewController {
         textField.placeholder = "height".localized
         textField.borderStyle = .roundedRect
         
+        textField.delegate = self
+        
         return textField
     }()
     
@@ -107,6 +117,8 @@ class CalculateScreenViewController: UIViewController {
         
         textField.placeholder = "weight".localized
         textField.borderStyle = .roundedRect
+        
+        textField.delegate = self
         
         return textField
     }()
@@ -127,10 +139,11 @@ class CalculateScreenViewController: UIViewController {
     
     // MARK: - Properties
     var viewModel: CalculateViewModelProtocol
-    var selectedGender: Gender?
+    var selectedGender: Gender = .female
     var selectedGoal: Goal = .weightGain
     var isButtonBlocked = true
     var login: String
+    
     
     init(login: String, viewModel: CalculateViewModelProtocol) {
         self.login = login
@@ -146,14 +159,9 @@ class CalculateScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
-        ageTextField.delegate = self
-        weightTextField.delegate = self
-        heightTextField.delegate = self
         setupGradient()
         setupUI()
         hideKeyboardWhenTappedAround()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -170,35 +178,32 @@ class CalculateScreenViewController: UIViewController {
     
     // MARK: - Private Methods
     @objc
-    func toggleFemaleCheckbox() {
-        femaleCheckboxImageView.isSelected = !femaleCheckboxImageView.isSelected
-        maleCheckboxImageView.isSelected = false
-        if femaleCheckboxImageView.isSelected {
-            selectedGender = .female
-        } else {
-            selectedGender = nil
+    func toggleGenderCheckbox() {
+            selectedGender = selectedGender == .male ? .female : .male
+            maleCheckboxImageView.isSelected = selectedGender == .male
+            femaleCheckboxImageView.isSelected = selectedGender == .female
         }
-    }
     
-    @objc
-    func toggleMaleCheckbox() {
-        maleCheckboxImageView.isSelected = !maleCheckboxImageView.isSelected
-        femaleCheckboxImageView.isSelected = false
-        if maleCheckboxImageView.isSelected {
-            selectedGender = .male
-        } else {
-            selectedGender = nil
+    func setRadioButton(names: [String]) -> [UIButton] {
+        let radioButton = UIButton.init(type: .custom)
+        var radioButtons: [UIButton] = []
+        
+        names.forEach { name in
+            radioButton.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
+            radioButton.setImage(UIImage.checkmark, for: .selected)
+            radioButtons = [radioButton]
         }
+
+        return radioButtons
     }
     
     @objc
     private func clickButton() {
         view.endEditing(true)
-        guard let gender = selectedGender, !isButtonBlocked else { return setAlert(title: "Ошибка!",
+        guard !isButtonBlocked else { return setAlert(title: "Ошибка!",
                                                                                    message: "Заполните все поля",
                                                                                    preferredStyle: .alert) }
-        viewModel.get(gender: gender)
-        print("элсе кнопка")
+        viewModel.get(gender: selectedGender)
         navigationController?.pushViewController(MobilityAndGoalScreenViewController(login: login, viewModel: viewModel), animated: true)
     }
     
@@ -215,7 +220,7 @@ class CalculateScreenViewController: UIViewController {
     func returnResult() {
         let result = viewModel.returnCalories()
         setAlert(title: "КБЖУ",
-                 message: "Калории: \(result.calories) ",
+                 message: "Калории: \(result.calories)",
                  preferredStyle: .alert)
     }
     
@@ -227,6 +232,9 @@ class CalculateScreenViewController: UIViewController {
                                          maleLabel,
                                          maleCheckboxImageView,
                                          femaleLabel])
+        
+        view.addSubviews(setRadioButton(names: ["A","D","C"]))
+        
         view.addSubview(ageLabel)
         view.addSubview(ageTextField)
         view.addSubview(heightLabel)

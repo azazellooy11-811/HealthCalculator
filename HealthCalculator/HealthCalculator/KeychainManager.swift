@@ -10,6 +10,7 @@ import Security
 
 final class KeychainManager {
     private static let service = "HelthCalculator"
+    static var status: OSStatus?
     
     static func registerUser(login: String, password: String, firstName: String, lastName: String) -> Bool {
         let passwordData = password.data(using: .utf8)
@@ -40,10 +41,14 @@ final class KeychainManager {
         if status == errSecSuccess,
            let data = result as? Data {
             let savedPassword = String(data: data, encoding: .utf8)
+            self.status = password == savedPassword ? errSecSuccess : errSecParam
             
             return password == savedPassword
         } else {
+            let status = SecItemCopyMatching(query as CFDictionary, &result)
+            self.status = status
             debugPrint("Error for getting password from Keychan")
+            
             return false
         }
     }
