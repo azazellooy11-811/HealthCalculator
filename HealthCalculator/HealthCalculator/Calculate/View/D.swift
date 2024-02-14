@@ -8,11 +8,13 @@
 import UIKit
 
 class D: CalculateScreenViewController {
-    let names = ["1", "2", "3"]
+    let names = ["female", "male"]
     
     override func viewDidLoad() {
-        self.initLabels(names: names)
-        self.initCheckboxs(count: names.count)
+        self.initLabelsOfRadioButtons(names: names)
+        self.initRadioButtons(count: names.count)
+        self.initBoldLabels(texts: ["1","2","3","4"])
+        self.initTextFields(placeholders: ["1","2","3"])
         super.viewDidLoad()
         view.backgroundColor = .white
         

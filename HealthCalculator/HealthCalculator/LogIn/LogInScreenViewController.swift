@@ -80,32 +80,22 @@ class LogInScreenViewController: UIViewController {
             
             navigationController?.pushViewController(TabBarController(login: login), animated: true)
         } else if KeychainManager.status == errSecParam {
-            setAlert(title: "Error",
-                     message: "Логин или пароль неправильные! Попробуй снова",
+            initAlert(title: "Error",
+                     message: "Логин или пароль неправильные! Попробуйте снова",
                      preferredStyle: .alert)
         } else {
-            setAlert(title: "Error",
+            initAlert(title: "Error",
                      message: "Пользователь не найден, создайте нового пользователя",
                      preferredStyle: .alert)
         }
     }
     
-    private func setAlert(title: String, message: String, preferredStyle: UIAlertController.Style) {
-        let alert = UIAlertController(title: title.localized,
-                                      message: message.localized,
-                                      preferredStyle: preferredStyle)
-        let action = UIAlertAction(title: "OK".localized, style: .default)
-        alert.addAction(action)
-        present(alert, animated: true)
-        
-    }
-    
     private func setupUI() {
         view.addSubview(containerView)
-        containerView.addSubview(logInTitle)
-        containerView.addSubview(loginTextField)
-        containerView.addSubview(passwordTextField)
-        containerView.addSubview(logInButton)
+        containerView.addSubviews([logInTitle,
+                                   loginTextField,
+                                   passwordTextField,
+                                   logInButton])
         
         setupConstraints()
     }

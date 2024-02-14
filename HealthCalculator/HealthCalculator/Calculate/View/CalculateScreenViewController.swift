@@ -18,26 +18,11 @@ class CalculateScreenViewController: UIViewController {
         
         return label
     }()
-    
-    private lazy var femaleLabel: UILabel = {
-        let label = UILabel()
-        
-        label.text = "female".localized
-        
-        return label
-    }()
-    
-    private lazy var maleLabel: UILabel = {
-        let label = UILabel()
-        
-        label.text = "male".localized
-        
-        return label
-    }()
-    
+    private lazy var boldLabels: [UILabel] = []
     private lazy var genderContainerView = UIView()
-    private lazy var labels: [UILabel] = []
-    private lazy var checkboxs: [UIButton] = []
+    private lazy var labelsOfRadioButtons: [UILabel] = []
+    private lazy var radioButtons: [UIButton] = []
+    private lazy var textFields: [UITextField] = []
     
     private lazy var femaleCheckboxImageView: UIButton = {
         let checkbox = UIButton.init(type: .custom)
@@ -182,26 +167,49 @@ class CalculateScreenViewController: UIViewController {
     }
     
     // MARK: - Private Methods
-    func initLabels(names: [String]) {
+    func initLabelsOfRadioButtons(names: [String]) {
         names.forEach { name in
             let label = UILabel()
             
             label.text = name
-            labels.append(label)
+            labelsOfRadioButtons.append(label)
         }
     }
     
-    func initCheckboxs(count: Int) {
+    func initRadioButtons(count: Int) {
         for _ in 0 ..< count {
-            let checkbox = UIButton.init(type: .custom)
+            let radioButton = UIButton.init(type: .custom)
             
-            checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
-            checkbox.setImage(UIImage.checkmark, for: .selected)
+            radioButton.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
+            radioButton.setImage(UIImage.checkmark, for: .selected)
             
-            checkboxs.append(checkbox)
+            radioButtons.append(radioButton)
         }
     }
-
+    
+    func initBoldLabels(texts: [String]) {
+        texts.forEach { text in
+            let label = UILabel()
+            
+            label.text = text.localized
+            label.font = .boldSystemFont(ofSize: 18)
+            
+            boldLabels.append(label)
+        }
+    }
+    
+    func initTextFields(placeholders: [String]) {
+        placeholders.forEach { placeholder in
+            let textField = UITextField()
+            
+            textField.placeholder = placeholder.localized
+            textField.borderStyle = .roundedRect
+            
+            textField.delegate = self
+            
+            textFields.append(textField)
+        }
+    }
     
     @objc
     func toggleGenderCheckbox() {
@@ -210,58 +218,34 @@ class CalculateScreenViewController: UIViewController {
         femaleCheckboxImageView.isSelected = selectedGender == .female
     }
     
-    func setRadioButton(names: [String]) -> [UIButton] {
-        let radioButton = UIButton.init(type: .custom)
-        var radioButtons: [UIButton] = []
-        
-        names.forEach { name in
-            radioButton.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
-            radioButton.setImage(UIImage.checkmark, for: .selected)
-            radioButtons = [radioButton]
-        }
-        
-        return radioButtons
-    }
-    
     @objc
     private func clickButton() {
         view.endEditing(true)
-        guard !isButtonBlocked else { return setAlert(title: "Ошибка!",
+        guard !isButtonBlocked else { return initAlert(title: "Ошибка!",
                                                       message: "Заполните все поля",
                                                       preferredStyle: .alert) }
         viewModel.get(gender: selectedGender)
         navigationController?.pushViewController(MobilityAndGoalScreenViewController(login: login, viewModel: viewModel), animated: true)
     }
     
-    private func setAlert(title: String, message: String, preferredStyle: UIAlertController.Style) {
-        let alert = UIAlertController(title: title.localized,
-                                      message: message.localized,
-                                      preferredStyle: preferredStyle)
-        let action = UIAlertAction(title: "OK".localized, style: .default)
-        alert.addAction(action)
-        present(alert, animated: true)
-        
-    }
-    
     func returnResult() {
         let result = viewModel.returnCalories()
-        setAlert(title: "КБЖУ",
-                 message: "Калории: \(result.calories)",
-                 preferredStyle: .alert)
+        initAlert(title: "КБЖУ", message: "Калории: \(result.calories)", preferredStyle: .alert)
     }
     
     
     private func setupUI() {
             view.addSubview(genderContainerView)
-        genderContainerView.addSubview(genderLabel)
-            genderContainerView.addSubviews(labels)
-            genderContainerView.addSubviews(checkboxs)
-            view.addSubview(ageLabel)
-            view.addSubview(ageTextField)
-            view.addSubview(heightLabel)
-            view.addSubview(heightTextField)
-            view.addSubview(weightLabel)
-            view.addSubview(weightTextField)
+        genderContainerView.addSubviews(labelsOfRadioButtons)
+            genderContainerView.addSubviews(radioButtons)
+        view.addSubviews(boldLabels)
+        view.addSubviews(textFields)
+//            view.addSubview(ageLabel)
+//            view.addSubview(ageTextField)
+//            view.addSubview(heightLabel)
+//            view.addSubview(heightTextField)
+//            view.addSubview(weightLabel)
+//            view.addSubview(weightTextField)
             view.addSubview(nextButton)
             
             setupConstraints()
@@ -269,29 +253,70 @@ class CalculateScreenViewController: UIViewController {
     
     private func setupConstraints() {
         genderContainerView.snp.makeConstraints { make in
-            make.height.equalTo(100)
+            make.height.equalTo(75)
             make.leading.trailing.equalToSuperview().inset(25)
             make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
         }
         
-        genderLabel.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview()
+        var prevRadioButton: UIButton? = nil
+        var prevLabel: UILabel? = nil
+        var prevBoldLabel: UILabel? = nil
+        var prevTextField: UITextField? = nil
+        
+        for i in 0 ..< boldLabels.count {
+            
+            let label = boldLabels[i]
+            
+            
+            if let prevBoldLabel {
+                if i == 1 {
+                    label.snp.makeConstraints { make in
+                        make.leading.equalToSuperview().inset(25)
+                        make.top.equalTo(genderContainerView.snp.bottom)
+                    }
+                    
+                    textFields[i-1].snp.makeConstraints { make in
+                        make.leading.equalToSuperview().inset(25)
+                        make.top.equalTo(label.snp.bottom).offset(5)
+                    }
+                    
+                } else {
+                    if let prevTextField {
+                        label.snp.makeConstraints { make in
+                            make.leading.equalToSuperview().inset(25)
+                            make.top.equalTo(prevTextField.snp.bottom).offset(25)
+                        }
+                        
+                        textFields[i-1].snp.makeConstraints { make in
+                            make.leading.equalToSuperview().inset(25)
+                            make.top.equalTo(label.snp.bottom).offset(5)
+                        }
+                    }
+                }
+                
+                prevTextField = textFields[i-1]
+                
+            } else {
+                label.snp.makeConstraints { make in
+                    make.leading.equalToSuperview().inset(25)
+                    make.bottom.equalTo(genderContainerView.snp.top)
+                }
+            }
+            
+            prevBoldLabel = label
         }
         
-        var prevCheckbox: UIButton? = nil
-        var prevLabel: UILabel? = nil
-        
-        for i in 0 ..< labels.count {
-            let label = labels[i]
-            let checkbox = checkboxs[i]
+        for i in 0 ..< labelsOfRadioButtons.count {
+            let label = labelsOfRadioButtons[i]
+            let checkbox = radioButtons[i]
             
             let bottom: ConstraintItem
             
-            if let prevCheckbox {
-                bottom = prevCheckbox.snp.bottom
+            if let prevRadioButton {
+                bottom = prevRadioButton.snp.bottom
             }
             else {
-                bottom = genderLabel.snp.bottom
+                bottom = genderContainerView.snp.top
             }
             
             checkbox.snp.makeConstraints { make in
@@ -308,63 +333,43 @@ class CalculateScreenViewController: UIViewController {
             else {
                 label.snp.makeConstraints { make in
                     make.leading.equalTo(checkbox.snp.trailing).offset(10)
-                    make.top.equalTo(genderLabel.snp.bottom)
+                    make.top.equalTo(bottom)
                 }
             }
             prevLabel = label
-            prevCheckbox = checkbox
+            prevRadioButton = checkbox
         }
         
-//        femaleCheckboxImageView.snp.makeConstraints { make in
-//            make.leading.equalToSuperview()
-//            make.top.equalTo(genderLabel.snp.bottom)
-//        }
-//        
-//        femaleLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(femaleCheckboxImageView.snp.trailing).offset(10)
-//            make.top.equalTo(genderLabel.snp.bottom)
-//        }
-//        
-//        maleCheckboxImageView.snp.makeConstraints { make in
-//            make.leading.equalToSuperview()
-//            make.top.equalTo(femaleCheckboxImageView.snp.bottom)
-//        }
-//        
-//        maleLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(maleCheckboxImageView.snp.trailing).offset(10)
-//            make.top.equalTo(femaleLabel.snp.bottom).offset(2)
+//        ageLabel.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(25)
+//            make.top.equalTo(genderContainerView.snp.bottom)
 //        }
         
-        ageLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(25)
-            make.top.equalTo(genderContainerView.snp.bottom)
-        }
-        
-        ageTextField.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(25)
-            make.top.equalTo(ageLabel.snp.bottom).offset(5)
-        }
-        
-        heightLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(25)
-            make.top.equalTo(ageTextField.snp.bottom).offset(25)
-        }
-        
-        heightTextField.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(25)
-            make.top.equalTo(heightLabel.snp.bottom).offset(5)
-        }
-        
-        weightLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(25)
-            make.top.equalTo(heightTextField.snp.bottom).offset(25)
-        }
-        
-        weightTextField.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(25)
-            make.top.equalTo(weightLabel.snp.bottom).offset(5)
-        }
-        
+//        ageTextField.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(25)
+//            make.top.equalTo(ageLabel.snp.bottom).offset(5)
+//        }
+//
+//        heightLabel.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(25)
+//            make.top.equalTo(ageTextField.snp.bottom).offset(25)
+//        }
+//
+//        heightTextField.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(25)
+//            make.top.equalTo(heightLabel.snp.bottom).offset(5)
+//        }
+//
+//        weightLabel.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(25)
+//            make.top.equalTo(heightTextField.snp.bottom).offset(25)
+//        }
+//
+//        weightTextField.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().inset(25)
+//            make.top.equalTo(weightLabel.snp.bottom).offset(5)
+//        }
+//
         nextButton.snp.makeConstraints { make in
             make.height.equalTo(60)
             make.width.equalTo(view.frame.width / 2)
