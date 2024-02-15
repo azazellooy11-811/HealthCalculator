@@ -19,4 +19,32 @@ class D: CalculateScreenViewController {
         view.backgroundColor = .white
         
     }
+    
+    override func toggleRadioButtons(sender: UIButton) {
+        super.toggleRadioButtons(sender: sender)
+        
+        switch sender.tag {
+        case 0: selectedGender = .female
+        case 1: selectedGender = .male
+        default: print("no")
+        }
+    }
+    
+    override func textFieldDidEndEditing(_ textField: UITextField) {
+        for _ in 0 ..< textFieldsList.count {
+            if let age = textFieldsList[0].text,
+               let height = textFieldsList[1].text,
+               let weight = textFieldsList[2].text,
+               let ageInt = Int(age),
+               let heightInt = Int(height),
+               let weightInt = Int(weight) {
+                isButtonBlocked = false
+                
+                viewModel.get(age: ageInt , height: heightInt , weight: weightInt)
+                
+            } else {
+                return isButtonBlocked = true
+            }
+        }
+    }
 }

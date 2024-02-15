@@ -10,105 +10,11 @@ import SnapKit
 
 class CalculateScreenViewController: UIViewController {
     // MARK: - GUI Variables
-    private lazy var genderLabel: UILabel = {
-        let label = UILabel()
-        
-        label.text = "Gender".localized
-        label.font = .boldSystemFont(ofSize: 18)
-        
-        return label
-    }()
     private lazy var boldLabels: [UILabel] = []
     private lazy var genderContainerView = UIView()
     private lazy var labelsOfRadioButtons: [UILabel] = []
     private lazy var radioButtons: [UIButton] = []
     private lazy var textFields: [UITextField] = []
-    
-    private lazy var femaleCheckboxImageView: UIButton = {
-        let checkbox = UIButton.init(type: .custom)
-        checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
-        checkbox.setImage(UIImage.checkmark, for: .selected)
-        checkbox.isSelected = true
-        
-        checkbox.addTarget(self, action: #selector(toggleGenderCheckbox), for: .touchUpInside)
-        
-        checkbox.tag = 0
-        
-        return checkbox
-    }()
-    
-    private lazy var maleCheckboxImageView: UIButton = {
-        let checkbox = UIButton.init(type: .custom)
-        
-        checkbox.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
-        checkbox.setImage(UIImage.checkmark, for: .selected)
-        
-        checkbox.addTarget(self, action: #selector(toggleGenderCheckbox), for: .touchUpInside)
-        
-        checkbox.tag = 1
-        
-        return checkbox
-    }()
-    
-    private lazy var ageLabel: UILabel = {
-        let label = UILabel()
-        
-        label.text = "Age".localized
-        label.font = .boldSystemFont(ofSize: 18)
-        
-        return label
-    }()
-    
-    private lazy var ageTextField: UITextField = {
-        let textField = UITextField()
-        
-        textField.placeholder = "age".localized
-        textField.borderStyle = .roundedRect
-        
-        textField.delegate = self
-        
-        return textField
-    }()
-    
-    private lazy var heightLabel: UILabel = {
-        let label = UILabel()
-        
-        label.text = "Height".localized
-        label.font = .boldSystemFont(ofSize: 18)
-        
-        return label
-    }()
-    
-    private lazy var heightTextField: UITextField = {
-        let textField = UITextField()
-        
-        textField.placeholder = "height".localized
-        textField.borderStyle = .roundedRect
-        
-        textField.delegate = self
-        
-        return textField
-    }()
-    
-    private lazy var weightLabel: UILabel = {
-        let label = UILabel()
-        
-        label.text = "Weight".localized
-        label.font = .boldSystemFont(ofSize: 18)
-        
-        return label
-    }()
-    
-    private lazy var weightTextField: UITextField = {
-        let textField = UITextField()
-        
-        textField.placeholder = "weight".localized
-        textField.borderStyle = .roundedRect
-        
-        textField.delegate = self
-        
-        return textField
-    }()
     
     private lazy var nextButton: UIButton = {
         let button = UIButton()
@@ -125,11 +31,14 @@ class CalculateScreenViewController: UIViewController {
     }()
     
     // MARK: - Properties
+    var textFieldsList: [UITextField] = []
+    var radioButtonsList: [UIButton] = []
     var viewModel: CalculateViewModelProtocol
     var selectedGender: Gender = .female
     var selectedGoal: Goal = .weightGain
     var isButtonBlocked = true
     var login: String
+    
     
     var buttons: [UIButton] = []
     
@@ -166,7 +75,9 @@ class CalculateScreenViewController: UIViewController {
         unregisterForKeyboardNotification()
     }
     
-    // MARK: - Private Methods
+    // MARK: - Methods
+    
+    
     func initLabelsOfRadioButtons(names: [String]) {
         names.forEach { name in
             let label = UILabel()
@@ -177,13 +88,25 @@ class CalculateScreenViewController: UIViewController {
     }
     
     func initRadioButtons(count: Int) {
-        for _ in 0 ..< count {
+        for i in 0 ..< count {
             let radioButton = UIButton.init(type: .custom)
             
             radioButton.setImage(UIImage.init(systemName: "circlebadge"), for: .normal)
             radioButton.setImage(UIImage.checkmark, for: .selected)
+            radioButton.addTarget(self, action: #selector(toggleRadioButtons), for: .touchUpInside)
+            radioButton.tag = i
             
             radioButtons.append(radioButton)
+            radioButtonsList.append(radioButton)
+        }
+    }
+    
+    @objc
+    func toggleRadioButtons(sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        let unSelectedButtons = radioButtons.filter { $0 != sender }
+        unSelectedButtons.forEach { button in
+            button.isSelected = false
         }
     }
     
@@ -208,22 +131,17 @@ class CalculateScreenViewController: UIViewController {
             textField.delegate = self
             
             textFields.append(textField)
+            textFieldsList.append(textField)
         }
     }
     
-    @objc
-    func toggleGenderCheckbox() {
-        selectedGender = selectedGender == .male ? .female : .male
-        maleCheckboxImageView.isSelected = selectedGender == .male
-        femaleCheckboxImageView.isSelected = selectedGender == .female
-    }
-    
+    // MARK: - Private Methods
     @objc
     private func clickButton() {
         view.endEditing(true)
         guard !isButtonBlocked else { return initAlert(title: "Ошибка!",
-                                                      message: "Заполните все поля",
-                                                      preferredStyle: .alert) }
+                                                       message: "Заполните все поля",
+                                                       preferredStyle: .alert) }
         viewModel.get(gender: selectedGender)
         navigationController?.pushViewController(MobilityAndGoalScreenViewController(login: login, viewModel: viewModel), animated: true)
     }
@@ -235,21 +153,15 @@ class CalculateScreenViewController: UIViewController {
     
     
     private func setupUI() {
-            view.addSubview(genderContainerView)
+        view.addSubview(genderContainerView)
         genderContainerView.addSubviews(labelsOfRadioButtons)
-            genderContainerView.addSubviews(radioButtons)
+        genderContainerView.addSubviews(radioButtons)
         view.addSubviews(boldLabels)
         view.addSubviews(textFields)
-//            view.addSubview(ageLabel)
-//            view.addSubview(ageTextField)
-//            view.addSubview(heightLabel)
-//            view.addSubview(heightTextField)
-//            view.addSubview(weightLabel)
-//            view.addSubview(weightTextField)
-            view.addSubview(nextButton)
-            
-            setupConstraints()
-        }
+        view.addSubview(nextButton)
+        
+        setupConstraints()
+    }
     
     private func setupConstraints() {
         genderContainerView.snp.makeConstraints { make in
@@ -340,36 +252,6 @@ class CalculateScreenViewController: UIViewController {
             prevRadioButton = checkbox
         }
         
-//        ageLabel.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(25)
-//            make.top.equalTo(genderContainerView.snp.bottom)
-//        }
-        
-//        ageTextField.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(25)
-//            make.top.equalTo(ageLabel.snp.bottom).offset(5)
-//        }
-//
-//        heightLabel.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(25)
-//            make.top.equalTo(ageTextField.snp.bottom).offset(25)
-//        }
-//
-//        heightTextField.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(25)
-//            make.top.equalTo(heightLabel.snp.bottom).offset(5)
-//        }
-//
-//        weightLabel.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(25)
-//            make.top.equalTo(heightTextField.snp.bottom).offset(25)
-//        }
-//
-//        weightTextField.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(25)
-//            make.top.equalTo(weightLabel.snp.bottom).offset(5)
-//        }
-//
         nextButton.snp.makeConstraints { make in
             make.height.equalTo(60)
             make.width.equalTo(view.frame.width / 2)
@@ -390,19 +272,6 @@ class CalculateScreenViewController: UIViewController {
 extension CalculateScreenViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let age = ageTextField.text,
-           let height = heightTextField.text,
-           let weight = weightTextField.text,
-           let ageInt = Int(age),
-           let heightInt = Int(height),
-           let weightInt = Int(weight) {
-            isButtonBlocked = false
-            
-            viewModel.get(age: ageInt , height: heightInt , weight: weightInt)
-            
-        } else {
-            return isButtonBlocked = true
-        }
     }
 }
 
