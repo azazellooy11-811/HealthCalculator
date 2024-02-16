@@ -25,9 +25,9 @@
 "weight" = "вес";
 "Next" = "Дальше";
 "Goal" = "Цель";
-"weightLoss" = "похудеть";
-"weightRetention" = "сохранить вес";
-"weightGain" = "набрать вес";
+"weight loss" = "похудеть";
+"weight retention" = "сохранить вес";
+"weight gain" = "набрать вес";
 "Average number of steps per month" = "Среднее количество шагов в месяц";
 "number of steps" = "количество шагов";
 "Cardio training in minutes in a week" = "Кардио тренировки в минутах за неделю";

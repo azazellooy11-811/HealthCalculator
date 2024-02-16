@@ -15,6 +15,5 @@ extension UIViewController {
         let action = UIAlertAction(title: "OK".localized, style: .default)
         alert.addAction(action)
         present(alert, animated: true)
-        alert.dismiss(animated: true)
     }
 }

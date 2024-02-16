@@ -25,9 +25,9 @@
 "weight" = "weight";
 "Next" = "Next";
 "Goal" = "Goal";
-"weightLoss" = "weightLoss";
-"weightRetention" = "weightRetention";
-"weightGain" = "weightGain";
+"weight loss" = "weight loss";
+"weight retention" = "weight retention";
+"weight gain" = "weight gain";
 "Average number of steps per month" = "Average number of steps per month";
 "number of steps" = "number of steps";
 "Cardio training in minutes in a week" = "Cardio training in minutes in a week";

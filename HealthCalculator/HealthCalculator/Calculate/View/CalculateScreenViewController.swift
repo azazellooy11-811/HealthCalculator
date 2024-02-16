@@ -11,38 +11,23 @@ import SnapKit
 class CalculateScreenViewController: UIViewController {
     // MARK: - GUI Variables
     private lazy var boldLabels: [UILabel] = []
-    private lazy var genderContainerView = UIView()
+    private lazy var containerView = UIView()
     private lazy var labelsOfRadioButtons: [UILabel] = []
     private lazy var radioButtons: [UIButton] = []
     private lazy var textFields: [UITextField] = []
-    
-    private lazy var nextButton: UIButton = {
-        let button = UIButton()
-        
-        button.layer.cornerRadius = 30
-        button.backgroundColor = .green
-        button.setTitle("Next".localized, for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.addTarget(self,
-                         action: #selector(clickButton),
-                         for: .touchUpInside)
-        
-        return button
-    }()
+    private lazy var button = UIButton()
     
     // MARK: - Properties
     var textFieldsList: [UITextField] = []
     var radioButtonsList: [UIButton] = []
+    var buttons: [UIButton] = []
     var viewModel: CalculateViewModelProtocol
-    var selectedGender: Gender = .female
-    var selectedGoal: Goal = .weightGain
+    var selectedGender: Gender?
+    var selectedGoal: Goal?
     var isButtonBlocked = true
     var login: String
     
-    
-    var buttons: [UIButton] = []
-    
-    
+    // MARK: - Initialize
     init(login: String, viewModel: CalculateViewModelProtocol) {
         self.login = login
         self.viewModel = viewModel
@@ -60,13 +45,29 @@ class CalculateScreenViewController: UIViewController {
         setupGradient()
         setupUI()
         hideKeyboardWhenTappedAround()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         registerForKeyboardNotification()
+        
+       
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        isButtonBlocked = true
+        
+        textFields.forEach { textField in
+            textField.text = ""
+        }
+        
+        radioButtons.forEach { button in
+            button.isSelected = false
+            selectedGender = nil
+        }
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -76,8 +77,6 @@ class CalculateScreenViewController: UIViewController {
     }
     
     // MARK: - Methods
-    
-    
     func initLabelsOfRadioButtons(names: [String]) {
         names.forEach { name in
             let label = UILabel()
@@ -98,15 +97,6 @@ class CalculateScreenViewController: UIViewController {
             
             radioButtons.append(radioButton)
             radioButtonsList.append(radioButton)
-        }
-    }
-    
-    @objc
-    func toggleRadioButtons(sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        let unSelectedButtons = radioButtons.filter { $0 != sender }
-        unSelectedButtons.forEach { button in
-            button.isSelected = false
         }
     }
     
@@ -135,36 +125,59 @@ class CalculateScreenViewController: UIViewController {
         }
     }
     
-    // MARK: - Private Methods
+    func initButton(title: String) {
+        let button = UIButton()
+        
+        button.layer.cornerRadius = 30
+        button.backgroundColor = .green
+        button.setTitle(title.localized, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.addTarget(self,
+                         action: #selector(clickButton),
+                         for: .touchUpInside)
+        
+        self.button = button
+    }
+    
     @objc
-    private func clickButton() {
+    func toggleRadioButtons(sender: UIButton) {
+        if sender.isSelected {
+            selectedGender = nil
+            selectedGoal = nil
+        }
+        sender.isSelected = !sender.isSelected
+        let unSelectedButtons = radioButtons.filter { $0 != sender }
+        unSelectedButtons.forEach { button in
+            button.isSelected = false
+        }
+    }
+    
+    @objc
+    func clickButton() {
         view.endEditing(true)
+        let texts = textFields.map({ $0.text })
+        if texts.isEmpty { isButtonBlocked = true }
         guard !isButtonBlocked else { return initAlert(title: "Ошибка!",
                                                        message: "Заполните все поля",
                                                        preferredStyle: .alert) }
-        viewModel.get(gender: selectedGender)
         navigationController?.pushViewController(MobilityAndGoalScreenViewController(login: login, viewModel: viewModel), animated: true)
     }
     
-    func returnResult() {
-        let result = viewModel.returnCalories()
-        initAlert(title: "КБЖУ", message: "Калории: \(result.calories)", preferredStyle: .alert)
-    }
-    
+    // MARK: - Private Methods
     
     private func setupUI() {
-        view.addSubview(genderContainerView)
-        genderContainerView.addSubviews(labelsOfRadioButtons)
-        genderContainerView.addSubviews(radioButtons)
+        view.addSubview(containerView)
+        containerView.addSubviews(labelsOfRadioButtons)
+        containerView.addSubviews(radioButtons)
         view.addSubviews(boldLabels)
         view.addSubviews(textFields)
-        view.addSubview(nextButton)
+        view.addSubview(button)
         
         setupConstraints()
     }
     
     private func setupConstraints() {
-        genderContainerView.snp.makeConstraints { make in
+        containerView.snp.makeConstraints { make in
             make.height.equalTo(75)
             make.leading.trailing.equalToSuperview().inset(25)
             make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
@@ -184,7 +197,7 @@ class CalculateScreenViewController: UIViewController {
                 if i == 1 {
                     label.snp.makeConstraints { make in
                         make.leading.equalToSuperview().inset(25)
-                        make.top.equalTo(genderContainerView.snp.bottom)
+                        make.top.equalTo(containerView.snp.bottom)
                     }
                     
                     textFields[i-1].snp.makeConstraints { make in
@@ -211,7 +224,7 @@ class CalculateScreenViewController: UIViewController {
             } else {
                 label.snp.makeConstraints { make in
                     make.leading.equalToSuperview().inset(25)
-                    make.bottom.equalTo(genderContainerView.snp.top)
+                    make.bottom.equalTo(containerView.snp.top)
                 }
             }
             
@@ -228,7 +241,7 @@ class CalculateScreenViewController: UIViewController {
                 bottom = prevRadioButton.snp.bottom
             }
             else {
-                bottom = genderContainerView.snp.top
+                bottom = containerView.snp.top
             }
             
             checkbox.snp.makeConstraints { make in
@@ -252,7 +265,7 @@ class CalculateScreenViewController: UIViewController {
             prevRadioButton = checkbox
         }
         
-        nextButton.snp.makeConstraints { make in
+        button.snp.makeConstraints { make in
             make.height.equalTo(60)
             make.width.equalTo(view.frame.width / 2)
             make.trailing.equalToSuperview().inset(20)
