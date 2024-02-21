@@ -71,7 +71,6 @@ class LoggedOutViewController: UIViewController {
         view.backgroundColor = .white
         
         setupUI()
-        print("я создался")
     }
     
     override func viewWillAppear(_ animated: Bool) {

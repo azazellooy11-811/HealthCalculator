@@ -52,7 +52,7 @@ final class RecipesCollectionViewCell: UICollectionViewCell {
         titleLabel.text = dish.title
         
         if let data = dish.imageData,
-            let dishImage = UIImage(data: data) {
+           let dishImage = UIImage(data: data) {
             imageView.image = dishImage
         } else {
             imageView.image = UIImage(named: "profile")

@@ -81,11 +81,11 @@ class LogInScreenViewController: UIViewController {
             navigationController?.pushViewController(TabBarController(login: login), animated: true)
         } else if KeychainManager.status == errSecParam {
             initAlert(title: "Error",
-                     message: "Логин или пароль неправильные! Попробуйте снова",
+                     message: "Username or password wrong! Try again",
                      preferredStyle: .alert)
         } else {
             initAlert(title: "Error",
-                     message: "Пользователь не найден, создайте нового пользователя",
+                     message: "User not found. Create a new user.",
                      preferredStyle: .alert)
         }
     }

@@ -26,8 +26,9 @@ class MobilityAndGoalScreenViewController: CalculateScreenViewController {
         self.initTextFields(placeholders: placeholders)
         self.initButton(title: buttonTitle)
         super.viewDidLoad()
-        view.backgroundColor = .white
         
+        view.backgroundColor = .white
+        self.navigationItem.hidesBackButton = true
     }
     
     override func toggleRadioButtons(sender: UIButton) {
@@ -54,7 +55,10 @@ class MobilityAndGoalScreenViewController: CalculateScreenViewController {
         let result = viewModel.returnCalories()
         initAlert(title: "КБЖУ", message: "Калории: \(result.calories)", preferredStyle: .alert)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.navigationController?.popToRootViewController(animated: true)
+            let navigationController = UINavigationController()
+            let psvc = TabBarController(login: self.login)
+            navigationController.viewControllers = [psvc]
+            (UIApplication.shared.delegate as? AppDelegate)?.changeRootViewController(navigationController)
         }
     }
     

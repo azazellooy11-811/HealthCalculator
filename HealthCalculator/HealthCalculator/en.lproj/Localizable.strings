@@ -36,3 +36,8 @@
 "strength training in minutes" = "strength training in minutes";
 "Show result" = "Show result";
 "Delete account" = "Delete account";
+"Error" = "Error";
+"Please fill the form using integer only. We don't accept other characters." = "Please fill the form using integer only. We don't accept other characters.";
+"Username or password wrong! Try again" = "Username or password wrong! Try again";
+"User not found. Create a new user." = "User not found. Create a new user.";
+"User not registered! Try again" = "User not registered! Try again";

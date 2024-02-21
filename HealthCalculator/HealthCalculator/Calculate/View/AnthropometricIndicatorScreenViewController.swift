@@ -1,5 +1,5 @@
 //
-//  D.swift
+//  AnthropometricIndicatorScreenViewController.swift
 //  HealthCalculator
 //
 //  Created by Азалия Халилова on 13.02.2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class D: CalculateScreenViewController {
+class AnthropometricIndicatorScreenViewController: CalculateScreenViewController {
     let names = ["female", "male"]
     let texts = ["Gender","Age","Height","Weight"]
     let placeholders = ["age","height","weight"]

@@ -36,3 +36,8 @@
 "strength training in minutes" = "cиловые тренировки в минутах";
 "Show result" = "Показать результат";
 "Delete account" = "Удалить аккаунт";
+"Error" = "Ошибка";
+"Please fill the form using integer only. We don't accept other characters." = "Пожалуйста, заполните форму, используя только целые числа. Мы не принимаем другие символы.";
+"Username or password wrong! Try again" = "Логин или пароль неправильные! Попробуйте снова";
+"User not found. Create a new user." = "Пользователь не найден. Создайте нового пользователя.";
+"User not registered! Try again" = "Пользователь не зарегистрирован! Попробуй снова";

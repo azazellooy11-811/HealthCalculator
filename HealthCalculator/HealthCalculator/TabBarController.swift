@@ -10,7 +10,7 @@ import UIKit
 class TabBarController: UITabBarController {
     
     var login: String
-
+    
     init(login: String) {
         self.login = login
         super.init(nibName: nil, bundle: nil)
@@ -34,7 +34,7 @@ class TabBarController: UITabBarController {
             setupNavigationController(rootViewController: ProfileScreenViewController(login: login),
                                       title: "Profile",
                                       image: UIImage(systemName: "person.fill")?.withConfiguration(UIImage.SymbolConfiguration(hierarchicalColor: .green)) ?? .add),
-            setupNavigationController(rootViewController: D(login: login, viewModel: CalculateViewModel(login: login)),
+            setupNavigationController(rootViewController: AnthropometricIndicatorScreenViewController(login: login, viewModel: CalculateViewModel(login: login)),
                                       title: "Calculate",
                                       image: UIImage(systemName: "plus.forwardslash.minus")?.withConfiguration(UIImage.SymbolConfiguration(hierarchicalColor: .green)) ?? .add),
             setupNavigationController(rootViewController: RecipesViewController(viewModel: RecipesViewModel()),

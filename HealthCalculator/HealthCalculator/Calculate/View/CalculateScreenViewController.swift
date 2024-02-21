@@ -51,23 +51,6 @@ class CalculateScreenViewController: UIViewController {
         super.viewWillAppear(animated)
         
         registerForKeyboardNotification()
-        
-       
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        isButtonBlocked = true
-        
-        textFields.forEach { textField in
-            textField.text = ""
-        }
-        
-        radioButtons.forEach { button in
-            button.isSelected = false
-            selectedGender = nil
-        }
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -81,7 +64,7 @@ class CalculateScreenViewController: UIViewController {
         names.forEach { name in
             let label = UILabel()
             
-            label.text = name
+            label.text = name.localized
             labelsOfRadioButtons.append(label)
         }
     }
@@ -155,10 +138,8 @@ class CalculateScreenViewController: UIViewController {
     @objc
     func clickButton() {
         view.endEditing(true)
-        let texts = textFields.map({ $0.text })
-        if texts.isEmpty { isButtonBlocked = true }
-        guard !isButtonBlocked else { return initAlert(title: "Ошибка!",
-                                                       message: "Заполните все поля",
+        guard !isButtonBlocked else { return initAlert(title: "Error",
+                                                       message: "Please fill the form using integer only. We don't accept other characters.",
                                                        preferredStyle: .alert) }
         navigationController?.pushViewController(MobilityAndGoalScreenViewController(login: login, viewModel: viewModel), animated: true)
     }

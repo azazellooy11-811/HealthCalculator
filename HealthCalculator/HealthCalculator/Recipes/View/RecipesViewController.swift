@@ -58,7 +58,7 @@ class RecipesViewController: UIViewController {
         viewModel.reloadData = { [weak self] in
             self?.collectionView.reloadData()
         }
-
+        
         viewModel.reloadCell = { [weak self] row in
             self?.collectionView.reloadItems(at: [IndexPath(row: row, section: 0)])
             
@@ -66,12 +66,12 @@ class RecipesViewController: UIViewController {
         
         viewModel.showError = { error in
             let alert = UIAlertController(title: "Error",
-                                                      message: "\(error)",
-                                                      preferredStyle: .alert)
+                                          message: "\(error)",
+                                          preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default)
-
+            
             alert.addAction(action)
-
+            
             self.present(alert, animated: true)
         }
     }

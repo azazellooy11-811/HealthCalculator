@@ -153,19 +153,14 @@ class RegisterScreenViewController: UIViewController {
                                         password: password,
                                         firstName: firstName,
                                         lastName: lastName) {
-            print("успешно зарегистрирован")
             ProfileInfoPersistent.save(ProfileInfoModel(firstName: firstName,
                                                         lastName: lastName,
                                                         login: login))
-            // TODO: - придумай тут что-нибудь, может алерт какой-нибудь
             navigationController?.pushViewController(TabBarController(login: login), animated: true)
         } else {
-            let alert = UIAlertController(title: "Error".localized,
-                                          message: "Пользователь не зарегистрирован! Попробуй снова".localized,
-                                          preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK".localized, style: .default)
-            alert.addAction(action)
-            present(alert, animated: true)
+            initAlert(title: "Error",
+                      message: "User not registered! Try again",
+                      preferredStyle: .alert)
         }
     }
 }

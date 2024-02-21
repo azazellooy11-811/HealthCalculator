@@ -54,7 +54,6 @@ final class ProfileInfoPersistent {
         
         do {
             try context.save()
-            print("Successfully saved")
         } catch let error {
             debugPrint("Save data error: \(error)")
         }
@@ -67,7 +66,7 @@ final class ProfileInfoPersistent {
             guard let profileEntity = objects.first(where: { $0.login == login }) else { return }
             context.delete(profileEntity)
             try context.save()
-
+            
         } catch {
             print("Delete image error: \(error)")
         }
